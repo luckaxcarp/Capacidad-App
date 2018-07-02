@@ -13,5 +13,7 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+
     <string name="title_activity_nueva_tarea">NuevaTarea</string>
+    <string name="title_activity_tarea_elegir_imagen1">TareaElegirImagen1Activity</string>
 </resources>
