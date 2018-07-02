@@ -53,7 +53,7 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.tarea_elegir_imagen1);
+        setContentView(R.layout.content_tarea_elegir_imagen1);
 
         mSetImage = (ImageView) findViewById(R.id.imageView);
         mOptionButton = (Button) findViewById(R.id.btnCargarImagen);
@@ -153,7 +153,7 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         mPath = savedInstanceState.getString("file_path");
-        
+
     }
 
     @Override
@@ -173,8 +173,6 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
                                 }
                             });
 
-                    mPath = Environment.getExternalStorageDirectory() + File.separator + MEDIA_DIRECTORY
-                            + File.separator + imageName;
                     Bitmap bitmap = BitmapFactory.decodeFile(mPath);
                     mSetImage.setImageBitmap(bitmap);
                     break;
@@ -193,7 +191,7 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode==MY_PERMISSIONS){
             if (grantResults.length==2 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED){
-                Toast.makeText(TareaElegirImagen1Activity.this,"Permisos aceptados",Toast.LENGTH_SHORT.show());
+                Toast.makeText(TareaElegirImagen1Activity.this,"Permisos aceptados",Toast.LENGTH_SHORT).show();
                 mOptionButton.setEnabled(true);
             }
 

@@ -46,7 +46,6 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="43dp"
         android:adjustViewBounds="true"
-        android:contentDescription="@string/contentDescriptionImagenSet"
         android:scaleType="centerCrop"
         app:srcCompat="@android:drawable/ic_menu_gallery" />
 
