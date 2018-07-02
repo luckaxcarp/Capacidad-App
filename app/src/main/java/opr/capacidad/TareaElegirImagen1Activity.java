@@ -108,7 +108,8 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
                     openCamara();
                 }else if(option[which] == "Elegir de galeria") {
                     Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    intent.setType("images/*");
+                    intent.setType("image/*");
+                    intent.setAction(Intent.ACTION_GET_CONTENT);
                     startActivityForResult(intent.createChooser(intent,"Selecciona app de imagen"),SELECT_PICTURE);
                 }else {
                     dialog.dismiss();
