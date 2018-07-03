@@ -46,6 +46,7 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
 
     private ImageView mSetImage;
     private Button mOptionButton;
+
     private RelativeLayout mRlView;
 
     private String mPath;
@@ -57,12 +58,15 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
 
         mSetImage = (ImageView) findViewById(R.id.imageView);
         mOptionButton = (Button) findViewById(R.id.btnCargarImagen);
+
         mRlView = (RelativeLayout) findViewById(R.id.rl_view);
 
         if (mayRequestStoragePermission()){
             mOptionButton.setEnabled(true);
+
         }else{
             mOptionButton.setEnabled(false);
+
         }
         mOptionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,6 +74,8 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
                 showOptions();
             }
         });
+
+
     }
 
 
@@ -176,10 +182,12 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
 
                     Bitmap bitmap = BitmapFactory.decodeFile(mPath);
                     mSetImage.setImageBitmap(bitmap);
+
                     break;
                 case SELECT_PICTURE:
                     Uri path = data.getData();
                     mSetImage.setImageURI(path);
+
                     break;
 
             }
@@ -194,6 +202,7 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
             if (grantResults.length==2 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED){
                 Toast.makeText(TareaElegirImagen1Activity.this,"Permisos aceptados",Toast.LENGTH_SHORT).show();
                 mOptionButton.setEnabled(true);
+
             }
 
         }else {
