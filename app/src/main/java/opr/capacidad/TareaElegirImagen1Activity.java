@@ -45,7 +45,12 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
     private final int SELECT_PICTURE = 300;
 
     private ImageView mSetImage;
+    private ImageView mSetImage2;
+    private ImageView mSetImage3;
+    private ImageView mSetImage4;
     private Button mOptionButton;
+    private Button mOptionButton2;
+    private Button mOptionButton3;
 
     private RelativeLayout mRlView;
 
@@ -57,20 +62,47 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
         setContentView(R.layout.content_tarea_elegir_imagen1);
 
         mSetImage = (ImageView) findViewById(R.id.imageView);
+        mSetImage2 = (ImageView) findViewById(R.id.imageView2);
+        mSetImage3 = (ImageView) findViewById(R.id.imageView3);
         mOptionButton = (Button) findViewById(R.id.btnCargarImagen);
+        mOptionButton2 = (Button) findViewById(R.id.btnCargarImagen2);
+        mOptionButton3 = (Button) findViewById(R.id.btnCargarImagen3);
 
         mRlView = (RelativeLayout) findViewById(R.id.rl_view);
 
         if (mayRequestStoragePermission()){
             mOptionButton.setEnabled(true);
+            mOptionButton2.setEnabled(true);
+            mOptionButton3.setEnabled(true);
+
 
         }else{
             mOptionButton.setEnabled(false);
+            mOptionButton2.setEnabled(false);
+            mOptionButton3.setEnabled(false);
 
         }
         mOptionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.i("INFO","btn1");
+                mSetImage4 = mSetImage;
+                showOptions();
+            }
+        });
+        mOptionButton2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i("INFO","btn2");
+                mSetImage4 = mSetImage2;
+                showOptions();
+            }
+        });
+        mOptionButton3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i("INFO","btn3");
+                mSetImage4 = mSetImage3;
                 showOptions();
             }
         });
@@ -111,8 +143,10 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (option[which] == "Tomar foto"){
+                    Log.i("INFO","camara");
                     openCamara();
                 }else if(option[which] == "Elegir de galeria") {
+                    Log.i("INFO","galeria");
                     Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     intent.setType("image/*");
                     intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -167,34 +201,38 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == RESULT_OK){
-            switch (requestCode){
-                case PHOTO_CODE:
-                    MediaScannerConnection.scanFile(this,
-                            new String[]{mPath}, null,
-                            new MediaScannerConnection.OnScanCompletedListener() {
-                                @Override
-                                public void onScanCompleted(String path, Uri uri) {
-                                    Log.i("ExternalStorage","Scanned"+ path + ":");
-                                    Log.i("ExternalStorage", "-> Uri = "+uri);
-                                }
-                            });
+            if (resultCode == RESULT_OK) {
+                switch (requestCode) {
+                    case PHOTO_CODE:
+                        MediaScannerConnection.scanFile(this,
+                                new String[]{mPath}, null,
+                                new MediaScannerConnection.OnScanCompletedListener() {
+                                    @Override
+                                    public void onScanCompleted(String path, Uri uri) {
+                                        Log.i("ExternalStorage", "Scanned" + path + ":");
+                                        Log.i("ExternalStorage", "-> Uri = " + uri);
+                                    }
+                                });
 
-                    Bitmap bitmap = BitmapFactory.decodeFile(mPath);
-                    mSetImage.setImageBitmap(bitmap);
+                        Bitmap bitmap = BitmapFactory.decodeFile(mPath);
+                        mSetImage4.setImageBitmap(bitmap);
 
-                    break;
-                case SELECT_PICTURE:
-                    Uri path = data.getData();
-                    mSetImage.setImageURI(path);
 
-                    break;
+                        break;
+                    case SELECT_PICTURE:
+                        Uri path = data.getData();
+                        mSetImage4.setImageURI(path);
 
+
+                        break;
+
+                }
             }
-        }
+
+
+
 
     }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -202,6 +240,8 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
             if (grantResults.length==2 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED){
                 Toast.makeText(TareaElegirImagen1Activity.this,"Permisos aceptados",Toast.LENGTH_SHORT).show();
                 mOptionButton.setEnabled(true);
+                mOptionButton2.setEnabled(true);
+                mOptionButton3.setEnabled(true);
 
             }
 
