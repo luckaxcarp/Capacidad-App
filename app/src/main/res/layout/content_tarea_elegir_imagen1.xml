@@ -149,7 +149,7 @@
         android:inputType="date" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/btnCrear"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignEnd="@+id/btnCargarImagen"
