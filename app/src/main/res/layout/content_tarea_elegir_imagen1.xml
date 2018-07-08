@@ -15,14 +15,12 @@
 
 
     <Button
-        android:id="@+id/btnCargarImagen3"
+        android:id="@+id/btnCargarImagen"
         android:layout_width="97dp"
         android:layout_height="36dp"
 
-        android:layout_alignStart="@+id/imageView3"
         android:layout_below="@+id/imageView"
-        android:text="Cargar"
-        android:layout_alignLeft="@+id/imageView2" />
+        android:text="Cargar" />
 
     <Button
         android:id="@+id/btnCargarImagen2"
@@ -33,12 +31,14 @@
         android:text="Cargar" />
 
     <Button
-        android:id="@+id/btnCargarImagen"
+        android:id="@+id/btnCargarImagen3"
         android:layout_width="97dp"
         android:layout_height="36dp"
 
+        android:layout_alignStart="@+id/imageView3"
         android:layout_below="@+id/imageView"
-        android:text="Cargar" />
+        android:text="Cargar"
+        android:layout_alignLeft="@+id/imageView2" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -67,16 +67,16 @@
         android:id="@+id/imageView3"
         android:layout_width="97dp"
         android:layout_height="108dp"
-        android:layout_alignEnd="@+id/editText"
+        android:layout_alignEnd="@+id/text_consigna"
 
         android:layout_alignTop="@+id/imageView"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
         app:srcCompat="@android:drawable/ic_menu_gallery"
-        android:layout_alignRight="@+id/editText" />
+        android:layout_alignRight="@+id/text_consigna" />
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/text_consigna"
         android:layout_width="334dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -98,7 +98,20 @@
         android:textIsSelectable="false" />
 
     <RadioButton
-        android:id="@+id/radioButton"
+        android:id="@+id/radioBtn"
+        android:layout_width="71dp"
+        android:layout_height="wrap_content"
+
+        android:layout_alignParentLeft="true"
+
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/btnCargarImagen3"
+        android:layout_marginLeft="27dp"
+        android:layout_marginStart="27dp"
+        android:text="" />
+
+    <RadioButton
+        android:id="@+id/radiobtn2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/btnCargarImagen"
@@ -106,27 +119,14 @@
         android:text="" />
 
     <RadioButton
-        android:id="@+id/radioButton3"
-        android:layout_width="71dp"
-        android:layout_height="wrap_content"
-
-        android:layout_alignParentStart="true"
-
-        android:layout_below="@+id/btnCargarImagen3"
-        android:layout_marginStart="27dp"
-        android:text=""
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="27dp" />
-
-    <RadioButton
-        android:id="@+id/radioButton2"
+        android:id="@+id/radioBtn3"
         android:layout_width="73dp"
         android:layout_height="wrap_content"
 
         android:layout_alignEnd="@+id/textView"
+        android:layout_alignRight="@+id/textView"
         android:layout_below="@+id/btnCargarImagen3"
-        android:text=""
-        android:layout_alignRight="@+id/textView" />
+        android:text="" />
 
     <TextView
         android:id="@+id/textView2"
@@ -139,7 +139,7 @@
         android:textAppearance="@android:style/TextAppearance.Holo.Medium" />
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/text_fprogramada"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
