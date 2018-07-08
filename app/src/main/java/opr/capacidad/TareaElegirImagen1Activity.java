@@ -166,7 +166,7 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
                         Map<String, String > params = new HashMap<>();
                         String imageData = imageToString(bitmap);
                         params.put("image",imageData);
-                        Log.i("ENVIAR IMAGEN", imageData);
+                        Log.i(" --- ENVIAR IMAGEN --- ", imageData);
                         return params;
                     }
                 };

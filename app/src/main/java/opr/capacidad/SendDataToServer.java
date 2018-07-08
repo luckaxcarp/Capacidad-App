@@ -21,6 +21,7 @@ import net.gotev.uploadservice.UploadNotificationConfig;
 import net.gotev.uploadservice.UploadStatusDelegate;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -61,5 +62,13 @@ public class SendDataToServer {
             }
         };
         return request.toString();
+    }
+
+    public static String fileThoughtHTTP(String encodeImage) {
+        Uri.Builder builder = new Uri.Builder();
+        builder.scheme("https")
+                .authority("18.218.177.65")
+                .appendQueryParameter("image", encodeImage);
+        return builder.build().toString();
     }
 }
