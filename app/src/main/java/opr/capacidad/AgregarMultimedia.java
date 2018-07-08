@@ -2,7 +2,7 @@ package opr.capacidad;
 
 public class AgregarMultimedia {
 
-    public static void postImage(String ImageLink){
+  /*  public static void postImage(String ImageLink){
         RequestParams params = new RequestParams();
         try {
             params.put("imagen", new File(ImageLink));
@@ -22,7 +22,7 @@ public class AgregarMultimedia {
 
             }
         });
-    }
+    }*/
 
 
 }

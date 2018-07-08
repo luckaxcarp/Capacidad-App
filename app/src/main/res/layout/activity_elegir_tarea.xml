@@ -6,9 +6,39 @@
     android:layout_height="match_parent"
     tools:context=".ElegirTarea">
 
-    <ListView
+    <Button
+        android:id="@+id/btnElegirImagen"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:layout_centerVertical="true" />
+        android:layout_height="wrap_content"
+
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="59dp"
+        android:text="Elegir imagen correcta" />
+
+    <Button
+        android:id="@+id/btnUnirConFlechas"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="135dp"
+        android:text="Unir con flechas" />
+
+    <Button
+        android:id="@+id/btnAdjuntarArchivos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="216dp"
+        android:text="Adjuntar archivos" />
+
+    <Button
+        android:id="@+id/btnIdentificarImagen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+
+        android:layout_marginBottom="166dp"
+        android:text="Identificar imagen" />
 </RelativeLayout>

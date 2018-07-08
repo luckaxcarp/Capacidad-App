@@ -52,6 +52,7 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
     private Button mOptionButton2;
     private Button mOptionButton3;
 
+
     private RelativeLayout mRlView;
 
     private String mPath;
@@ -67,6 +68,9 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
         mOptionButton = (Button) findViewById(R.id.btnCargarImagen);
         mOptionButton2 = (Button) findViewById(R.id.btnCargarImagen2);
         mOptionButton3 = (Button) findViewById(R.id.btnCargarImagen3);
+
+
+
 
         mRlView = (RelativeLayout) findViewById(R.id.rl_view);
 
