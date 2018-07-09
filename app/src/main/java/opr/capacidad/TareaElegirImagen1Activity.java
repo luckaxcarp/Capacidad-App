@@ -1,11 +1,9 @@
 package opr.capacidad;
 
 import android.annotation.TargetApi;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaScannerConnection;
@@ -13,15 +11,12 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.PersistableBundle;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -30,29 +25,25 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-import net.gotev.uploadservice.MultipartUploadRequest;
-import net.gotev.uploadservice.UploadNotificationConfig;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.io.UnsupportedEncodingException;
 
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static android.Manifest.permission.CAMERA;
-
-import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 public class TareaElegirImagen1Activity extends AppCompatActivity {
     private static String APP_DIRECTORY = "MyPictureApp/";
@@ -78,8 +69,8 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
     private String mPath;
     private int actualImage;
     private String encodedString;
-    private Uri filePath;
-    private Bitmap bitmap;
+    private Uri imagePath;
+    private Bitmap imageBitmap;
 
     public int idTerapia;
     private String consigna;
@@ -150,32 +141,50 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
                 fProgramada = findViewById(R.id.text_fprogramada).toString();
                 imagenCorrecta = 3;
 
-                StringRequest stringRequest = new StringRequest("http://18.218.177.65/upload-image-str2.php", new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
+                /**RequestQueue requestQueue = Volley.newRequestQueue(TareaElegirImagen1Activity.this);
 
+                String server = "http://18.218.177.65/";
+                final String url = server + "upload-image-str2.php?pic=" + encodedString;
+
+                Log.i("CREATE REQUEST", "url post: " + url);
+
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener() {
+                    @Override
+                    public void onResponse(Object response) {
+                        Toast.makeText(TareaElegirImagen1Activity.this,response.toString(),Toast.LENGTH_SHORT).show();
                     }
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), "error: " + error.toString(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(TareaElegirImagen1Activity.this,"Ocurrió un error al realizar la petición.",Toast.LENGTH_SHORT).show();
+                        Log.i("REQUEST", error.toString());
+                        // As of f605da3 the following should work
+                        NetworkResponse response = error.networkResponse;
+                        if (error instanceof ServerError && response != null) {
+                            try {
+                                String res = new String(response.data,
+                                        HttpHeaderParser.parseCharset(response.headers, "utf-8"));
+                                Log.i("RESPONSE", res);
+
+                                // Now you can use any deserializer to make sense of data
+                                JSONObject obj = new JSONObject(res);
+
+                            } catch (UnsupportedEncodingException e1) {
+                                // Couldn't properly decode data to string
+                                e1.printStackTrace();
+                            } catch (JSONException e2) {
+                                // returned data is not JSONObject?
+                                e2.printStackTrace();
+                            }
+                        }
                     }
-                }) {
-                    protected Map<String, String> getParams() throws AuthFailureError {
-                        Map<String, String > params = new HashMap<>();
-                        String imageData = imageToString(bitmap);
-                        params.put("image",imageData);
-                        Log.i(" --- ENVIAR IMAGEN --- ", imageData);
-                        return params;
-                    }
-                };
+                });
+                requestQueue.add(stringRequest);**/
 
-                RequestQueue requestQueue = Volley.newRequestQueue(TareaElegirImagen1Activity.this);
-                requestQueue.add(stringRequest);
+                SendDataToServer.sendImage(TareaElegirImagen1Activity.this,encodedString);
 
-
-                Log.i("INFO SUBIR IMAGEN","Ruta: " + filePath.getPath());
+                Log.i("INFO SUBIR IMAGEN","Ruta: " + imagePath.getPath());
+                Log.i("INFO SUBIR IMAGEN","imagen: " + encodedString);
             }
         });
 
@@ -301,32 +310,23 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
                                     }
                                 });
 
-                        bitmap = BitmapFactory.decodeFile(mPath);
-                        mSetImage4.setImageBitmap(bitmap);
+                        imageBitmap = BitmapFactory.decodeFile(mPath);
+                        mSetImage4.setImageBitmap(imageBitmap);
                         savePathToCorrectImage(actualImage, mPath);
 
-                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-                        //bitmap.recycle();
-
-                        byte[] array = stream.toByteArray();
-                        encodedString = Base64.encodeToString(array, 0);
+                        encodedString = SendDataToServer.encodeBitmap(imageBitmap);
 
                         break;
                     case SELECT_PICTURE:
-                        filePath = data.getData();
+                        imagePath = data.getData();
+                        Log.i("GALERY SELECT","Ruta: " + imagePath.toString());
+                        mSetImage4.setImageURI(imagePath);
+                        savePathToCorrectImage(actualImage, imagePath.toString());
 
-                        try {
-                            InputStream inputStream = getContentResolver().openInputStream(filePath);
-                            Bitmap bitmapG = BitmapFactory.decodeStream(inputStream);
-                            mSetImage4.setImageBitmap(bitmapG);
-                        } catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                        }
-                        mSetImage4.setImageURI(filePath);
-                        savePathToCorrectImage(actualImage, filePath.toString());
+                        imageBitmap = SendDataToServer.getBitmap(this, imagePath);
+                        encodedString = SendDataToServer.encodeBitmap(imageBitmap);
 
-                        Log.i("SELECCINOR DE GALERIA","Ruta: " + filePath.toString());
+                        Log.i("IMAGE ENCODED","String: " + encodedString);
                         break;
                 }
             }
@@ -343,9 +343,7 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
                 mOptionButton.setEnabled(true);
                 mOptionButton2.setEnabled(true);
                 mOptionButton3.setEnabled(true);
-
             }
-
         }else {
             showExplanation();
         }
@@ -373,15 +371,6 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
             }
         });
         builder.show();
-    }
-
-    private  String imageToString(Bitmap bitmap) {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
-        byte[] imageBytes = outputStream.toByteArray();
-
-        String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
-        return encodedImage;
     }
 }
 
