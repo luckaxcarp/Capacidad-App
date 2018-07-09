@@ -21,11 +21,13 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+import android.content.Context;
 
 import java.io.File;
 
@@ -52,6 +54,7 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
     private Button mOptionButton2;
     private Button mOptionButton3;
 
+    private Button Crear;
 
     private RelativeLayout mRlView;
 
@@ -69,7 +72,7 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
         mOptionButton2 = (Button) findViewById(R.id.btnCargarImagen2);
         mOptionButton3 = (Button) findViewById(R.id.btnCargarImagen3);
 
-
+        Crear = (Button) findViewById(R.id.btnCrear);
 
 
         mRlView = (RelativeLayout) findViewById(R.id.rl_view);
@@ -108,6 +111,18 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
                 Log.i("INFO","btn3");
                 mSetImage4 = mSetImage3;
                 showOptions();
+            }
+        });
+        Crear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast toast1 = Toast.makeText(getApplicationContext(), "Tarea creada", Toast.LENGTH_SHORT);
+                toast1.setGravity(Gravity.CENTER,0,0);
+
+
+                toast1.show();
+                Intent Crear = new Intent(TareaElegirImagen1Activity.this, ElegirTarea.class);
+                startActivity(Crear);
             }
         });
 
