@@ -33,6 +33,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import opr.capacidad.view.ResolverTareaActivity;
+
 import static android.Manifest.permission.READ_CONTACTS;
 
 /**
@@ -89,7 +91,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             @Override
             public void onClick(View view) {
                 //attemptLogin();
-                Intent intent = new Intent(LoginActivity.this, MenuInicio.class);
+                Intent intent = new Intent(LoginActivity.this, ResolverTareaActivity.class);
                 startActivity(intent);
             }
         });

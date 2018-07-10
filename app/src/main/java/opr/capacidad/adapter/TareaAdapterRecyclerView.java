@@ -33,7 +33,7 @@ public class TareaAdapterRecyclerView extends RecyclerView.Adapter<TareaAdapterR
     @Override
     public void onBindViewHolder(TareaViewHolder holder, int position) {
         Tarea tarea = tareas.get(position);
-        holder.tareaName.setText(tarea.getName());
+        holder.tareaName.setText(tarea.getTittle());
     }
 
     @Override

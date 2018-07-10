@@ -1,4 +1,4 @@
-package opr.capacidad.view.fragment;
+package opr.capacidad.view.fragmentsTerapia;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
