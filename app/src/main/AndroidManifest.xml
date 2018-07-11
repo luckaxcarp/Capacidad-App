@@ -31,19 +31,15 @@
         <activity
             android:name=".ElegirTarea"
             android:label="Elegir tarea" />
+        <activity android:name=".ResolverTareaActivity" />
+        <activity android:name=".RegistrarUsuario" />
+        <activity android:name=".PantallaPrincipal" />
+        <activity android:name=".ConsultarUsuario" />
         <activity
-            android:name=".MenuInicio"
-            android:label="@string/title_activity_menu_inicio"
+            android:name=".TodoUsuario"
+            android:label="@string/title_activity_todo_usuario"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".Pacientes"
-            android:label="@string/title_activity_pacientes"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".Terapia"
-            android:label="@string/title_activity_terapia"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".view.ResolverTareaActivity"></activity>
+        <activity android:name=".TareaPaciente"></activity>
     </application>
 
 </manifest>

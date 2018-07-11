@@ -128,36 +128,27 @@
         android:text=""
         android:layout_alignRight="@+id/textView" />
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-
-        android:layout_marginBottom="118dp"
-        android:text="Fecha de finalizacion."
-        android:textAppearance="@android:style/TextAppearance.Holo.Medium" />
-
-    <EditText
-        android:id="@+id/editText2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-
-        android:layout_marginBottom="71dp"
-        android:ems="10"
-        android:inputType="date" />
-
     <Button
         android:id="@+id/btnCrear"
-        android:layout_width="wrap_content"
+        android:layout_width="269dp"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/btnCargarImagen"
+
 
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="14dp"
-        android:text="Crear"
-        android:layout_alignRight="@+id/btnCargarImagen" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="89dp"
+        android:text="Crear" />
+
+    <Button
+        android:id="@+id/btnVolver"
+        android:layout_width="266dp"
+        android:layout_height="wrap_content"
+
+
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="26dp"
+        android:text="Volver" />
 
 
 </RelativeLayout>

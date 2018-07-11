@@ -1,4 +1,4 @@
-package opr.capacidad.view;
+package opr.capacidad;
 
 import android.content.Intent;
 import android.provider.MediaStore;

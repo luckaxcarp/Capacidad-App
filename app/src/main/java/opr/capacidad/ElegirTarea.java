@@ -9,6 +9,8 @@ import android.widget.Button;
 public class ElegirTarea extends AppCompatActivity {
 
    private Button elegirImagen;
+    private Button Volver;
+    private Button Unir;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +24,24 @@ public class ElegirTarea extends AppCompatActivity {
             public void onClick(View view) {
                 Intent elegirImagen = new Intent(ElegirTarea.this, TareaElegirImagen1Activity.class);
                 startActivity(elegirImagen);
+            }
+        });
+        Volver = (Button) findViewById(R.id.btnVolver);
+
+        Volver.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent Volver = new Intent(ElegirTarea.this, PantallaPrincipal.class);
+                startActivity(Volver);
+            }
+        });
+        Unir = (Button) findViewById(R.id.btnUnirConFlechas);
+
+        Unir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent Unir = new Intent(ElegirTarea.this, TareaPaciente.class);
+                startActivity(Unir);
             }
         });
 

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ConsultarUsuario">
+
+    <EditText
+        android:id="@+id/campoIdConsulta"
+        android:layout_width="330dp"
+        android:layout_height="wrap_content"
+
+        android:layout_alignParentTop="true"
+
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="37dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Id" />
+
+    <EditText
+        android:id="@+id/campoNombreConsulta"
+        android:layout_width="328dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="108dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Nombre" />
+
+    <EditText
+        android:id="@+id/campoRolConsulta"
+        android:layout_width="325dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="176dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Rol" />
+
+    <Button
+        android:id="@+id/btnConsultar"
+        android:layout_width="324dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="212dp"
+        android:text="Consultar"
+        android:onClick="onClick"/>
+
+    <Button
+        android:id="@+id/btnVolver"
+        android:layout_width="143dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
+        android:text="Volver" />
+
+    <Button
+        android:id="@+id/btnEliminar"
+        android:layout_width="326dp"
+        android:layout_height="wrap_content"
+
+
+        android:layout_alignParentBottom="true"
+
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="79dp"
+        android:text="Eliminar" />
+
+    <Button
+        android:id="@+id/btnActulizar"
+        android:layout_width="328dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="146dp"
+        android:text="Actualizar" />
+</RelativeLayout>

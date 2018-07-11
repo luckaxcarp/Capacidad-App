@@ -1,9 +1,11 @@
 package opr.capacidad;
 
 import android.annotation.TargetApi;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaScannerConnection;
@@ -30,6 +32,7 @@ import android.widget.Toast;
 import android.content.Context;
 
 import java.io.File;
+import java.io.FileInputStream;
 
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static android.Manifest.permission.CAMERA;
@@ -38,7 +41,7 @@ import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 public class TareaElegirImagen1Activity extends AppCompatActivity {
 
-
+SQLiteDatabase db;
     private static String APP_DIRECTORY = "MyPictureApp/";
     private static String MEDIA_DIRECTORY = APP_DIRECTORY + "PictureApp/";
 
@@ -54,11 +57,14 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
     private Button mOptionButton2;
     private Button mOptionButton3;
 
+    private Button Volver;
     private Button Crear;
 
     private RelativeLayout mRlView;
 
     private String mPath;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +78,7 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
         mOptionButton2 = (Button) findViewById(R.id.btnCargarImagen2);
         mOptionButton3 = (Button) findViewById(R.id.btnCargarImagen3);
 
+        Volver = (Button) findViewById(R.id.btnVolver);
         Crear = (Button) findViewById(R.id.btnCrear);
 
 
@@ -113,6 +120,12 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
                 showOptions();
             }
         });
+
+
+        db = this.openOrCreateDatabase("test.db",Context.MODE_PRIVATE,null);
+        db.execSQL("create table if not exists tb (a blob, b blob, c blob)");
+
+
         Crear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -121,12 +134,48 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
 
 
                 toast1.show();
-                Intent Crear = new Intent(TareaElegirImagen1Activity.this, ElegirTarea.class);
-                startActivity(Crear);
+
+            }
+        });
+        Volver.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent Volver = new Intent(TareaElegirImagen1Activity.this, ElegirTarea.class);
+                startActivity(Volver);
             }
         });
 
 
+
+
+    }
+
+    public void saveImage (View view){
+        try {
+            FileInputStream fis = new FileInputStream("/storage/sdcard/DCIM/Facebook/FB_IMG_1531288629488.jpg");
+            FileInputStream fis2 = new FileInputStream("/storage/sdcard/DCIM/Facebook/FB_IMG_1531288636633.jpg");
+            FileInputStream fis3 = new FileInputStream("/storage/sdcard/DCIM/Facebook/FB_IMG_1531288647579.jpg");
+            byte[] image = new byte[fis.available()];
+            fis.read(image);
+            byte[] image2 = new byte[fis2.available()];
+            fis2.read(image2);
+            byte[] image3 = new byte[fis3.available()];
+            fis3.read(image3);
+
+            ContentValues values = new ContentValues();
+            values.put("a",image);
+            values.put("b",image2);
+            values.put("c",image3);
+            db.insert("tb",null, values);
+
+            fis.close();
+            fis2.close();
+            fis3.close();
+        }catch (Exception e){
+            e.printStackTrace();
+
+        }
     }
 
 

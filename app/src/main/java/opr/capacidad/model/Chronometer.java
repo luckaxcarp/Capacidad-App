@@ -1,6 +1,5 @@
 package opr.capacidad.model;
 
-import android.app.Activity;
 import android.app.Service;
 
 import java.util.Timer;
@@ -13,7 +12,7 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import opr.capacidad.view.ResolverTareaActivity;
+import opr.capacidad.ResolverTareaActivity;
 
 
 public class Chronometer extends Service {

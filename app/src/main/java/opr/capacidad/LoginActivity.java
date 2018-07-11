@@ -33,14 +33,16 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import opr.capacidad.view.ResolverTareaActivity;
-
 import static android.Manifest.permission.READ_CONTACTS;
 
 /**
  * A login screen that offers login via email/password.
  */
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
+
+
+
+
 
     /**
      * Id to identity READ_CONTACTS permission request.
@@ -71,6 +73,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         // Set up the login form.
+
+
+
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
 
@@ -86,18 +91,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
-        btnLogin = findViewById(R.id.btnLogin);
+        btnLogin = (Button) findViewById(R.id.btnLogin);
         btnLogin.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 //attemptLogin();
-                Intent intent = new Intent(LoginActivity.this, ResolverTareaActivity.class);
-                startActivity(intent);
+                Intent btnLogin = new Intent(LoginActivity.this, TodoUsuario.class);
+                startActivity(btnLogin);
             }
         });
 
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
     }
 
     private void populateAutoComplete() {
