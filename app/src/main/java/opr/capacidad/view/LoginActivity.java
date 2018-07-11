@@ -1,4 +1,4 @@
-package opr.capacidad;
+package opr.capacidad.view;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -20,6 +20,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -33,7 +34,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import opr.capacidad.view.ResolverTareaActivity;
+import opr.capacidad.R;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -91,8 +92,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             @Override
             public void onClick(View view) {
                 //attemptLogin();
-                Intent intent = new Intent(LoginActivity.this, ResolverTareaActivity.class);
+
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                intent.putExtra("tipo_usuario", mEmailView.getText().toString());
                 startActivity(intent);
+
             }
         });
 

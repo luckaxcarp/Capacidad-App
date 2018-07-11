@@ -5,16 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".view.Pacientes"
-    tools:showIn="@layout/activity_pacientes">
+    tools:context=".view.MainActivity"
+    tools:showIn="@layout/app_bar_main">
 
-    <Button
-        android:id="@+id/btnPaciente"
-        android:layout_width="378dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="8dp"
-        android:text="Julian Bono"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>

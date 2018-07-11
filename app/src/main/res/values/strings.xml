@@ -29,4 +29,10 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="btnSubmit">RESOLVER</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="menu_inicio">Inicio</string>
+    <string name="menu_terapias">Pacientes</string>
+    <string name="menu_calendario">Calendario</string>
+    <string name="menu_sitios_interes">Sitios de interés</string>
+    <string name="menu_mi_perfil">Mi perfil</string>
 </resources>

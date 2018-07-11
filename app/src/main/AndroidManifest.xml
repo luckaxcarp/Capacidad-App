@@ -17,7 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".LoginActivity"
+            android:name=".view.LoginActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,24 +26,32 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".TareaElegirImagen1Activity"
+            android:name=".view.TareaElegirImagen1Activity"
             android:label="Elegir imagen correcta" />
         <activity
-            android:name=".ElegirTarea"
+            android:name=".view.ElegirTarea"
             android:label="Elegir tarea" />
         <activity
             android:name=".MenuInicio"
             android:label="@string/title_activity_menu_inicio"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Pacientes"
+            android:name=".view.Pacientes"
             android:label="@string/title_activity_pacientes"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Terapia"
+            android:name=".view.Terapia"
             android:label="@string/title_activity_terapia"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".view.ResolverTareaActivity"></activity>
+        <activity android:name=".view.ResolverTareaActivity" />
+        <activity
+            android:name=".view.MainActivity"
+            android:label="@string/title_activity_main"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".view.TempActivity"
+            android:label="Terapia" />
+        <activity android:name=".view.TerapeutasActivity"></activity>
     </application>
 
 </manifest>

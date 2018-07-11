@@ -10,7 +10,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="16dp"
     android:paddingBottom="16dp"
-    tools:context=".TareaElegirImagen1Activity"
+    tools:context=".view.TareaElegirImagen1Activity"
     >
 
 
