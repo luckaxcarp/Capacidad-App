@@ -39,7 +39,6 @@
             android:name=".TodoUsuario"
             android:label="@string/title_activity_todo_usuario"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".TareaPaciente"></activity>
     </application>
 
 </manifest>

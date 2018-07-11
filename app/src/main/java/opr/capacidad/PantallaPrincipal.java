@@ -13,7 +13,7 @@ public class PantallaPrincipal extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pantalla_principal);
+        setContentView(R.layout.activity_pantalla_principal2);
 
         Tarea = (Button) findViewById(R.id.btnTarea);
 

@@ -108,6 +108,21 @@ public class ResolverTareaActivity extends AppCompatActivity {
         });
     }
 
+    /*public void getImage (View view){
+        Cursor c = db.rawQuery("select * from tb",null);
+        if(c.moveToNext()){
+            byte[]  image = c.getBlob(0);
+            Bitmap bmp = BitmapFactory.decodeByteArray(image,0,image.length);
+            mSetImage.setImageBitmap(bmp);
+            byte[]  image2 = c.getBlob(1);
+            Bitmap bmp2 = BitmapFactory.decodeByteArray(image2,0,image2.length);
+            mSetImage2.setImageBitmap(bmp2);
+            byte[]  image3 = c.getBlob(2);
+            Bitmap bmp3 = BitmapFactory.decodeByteArray(image3,0,image3.length);
+            mSetImage3.setImageBitmap(bmp3);
+        }
+    }*/
+
     protected void onDestroy() {
         stopChronometer();
         super.onDestroy();
