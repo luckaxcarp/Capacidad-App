@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
@@ -22,6 +23,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -31,8 +33,11 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 import android.content.Context;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+
+import opr.capacidad.Utilidades.Utilidades;
 
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static android.Manifest.permission.CAMERA;
@@ -41,7 +46,7 @@ import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 public class TareaElegirImagen1Activity extends AppCompatActivity {
 
-SQLiteDatabase db;
+    private SQLiteDatabase db;
     private static String APP_DIRECTORY = "MyPictureApp/";
     private static String MEDIA_DIRECTORY = APP_DIRECTORY + "PictureApp/";
 
@@ -132,9 +137,11 @@ SQLiteDatabase db;
                 Toast toast1 = Toast.makeText(getApplicationContext(), "Tarea creada", Toast.LENGTH_SHORT);
                 toast1.setGravity(Gravity.CENTER,0,0);
 
+                cargarImage("1","",mSetImage);
+                cargarImage("2","",mSetImage2);
+                cargarImage("3","",mSetImage3);
 
                 toast1.show();
-
             }
         });
         Volver.setOnClickListener(new View.OnClickListener() {
@@ -149,6 +156,29 @@ SQLiteDatabase db;
 
 
 
+    }
+
+    private void cargarImage(String id, String nombre, ImageView image) {
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(this,"bd_usuarios",null,1);
+        SQLiteDatabase db=conn.getWritableDatabase();
+
+        Bitmap bitmap = ((BitmapDrawable)image.getDrawable()).getBitmap();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream .toByteArray();
+        String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
+
+        //insert into usuario (id,nombre,telefono) values (123,'Cristian','85665223')
+
+        String insert="INSERT INTO "+ Utilidades.TABLA_USUARIO
+                +" ( " +Utilidades.CAMPO_ID+","+Utilidades.CAMPO_NOMBRE+","+Utilidades.CAMPO_ROL+")" +
+                " VALUES ('" + nombre + "', '"+nombre+"','"
+                +encoded+"')";
+
+        db.execSQL(insert);
+
+
+        db.close();
     }
 
     public void saveImage (View view){
