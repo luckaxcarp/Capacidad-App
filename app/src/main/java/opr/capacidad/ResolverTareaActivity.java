@@ -18,6 +18,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
 
 import opr.capacidad.R;
@@ -63,12 +64,11 @@ public class ResolverTareaActivity extends AppCompatActivity {
         tarea.getDataById(1);
 
 
-
         tvTittle.setText(tarea.getTittle());
         tvConsigna.setText(tarea.getConsigna());
-        ivImg1.setImageBitmap(getBitmap(Consultar("1"))); //tarea.getImage1()
-        ivImg2.setImageBitmap(getBitmap(Consultar("2")));
-        ivImg3.setImageBitmap(getBitmap(Consultar("3")));
+        ivImg1.setImageBitmap(Consultar("1")); //tarea.getImage1()
+        ivImg2.setImageBitmap(Consultar("2"));
+        ivImg3.setImageBitmap(Consultar("3"));
 
         switch (tarea.getRightChoice()) {
             case 1:
@@ -96,7 +96,7 @@ public class ResolverTareaActivity extends AppCompatActivity {
                 stopChronometer();
 
                 if (rbGroup.getCheckedRadioButtonId() == -1) {
-                    Toast.makeText(getApplicationContext(), "Por favor elija una imagen.",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Por favor elija una imagen.", Toast.LENGTH_SHORT).show();
                 } else {
                     int selectedId = rbGroup.getCheckedRadioButtonId();
                     RadioButton selectedRD = findViewById(selectedId);
@@ -118,20 +118,6 @@ public class ResolverTareaActivity extends AppCompatActivity {
         });
     }
 
-    /*public void getImage (View view){
-        Cursor c = db.rawQuery("select * from tb",null);
-        if(c.moveToNext()){
-            byte[]  image = c.getBlob(0);
-            Bitmap bmp = BitmapFactory.decodeByteArray(image,0,image.length);
-            mSetImage.setImageBitmap(bmp);
-            byte[]  image2 = c.getBlob(1);
-            Bitmap bmp2 = BitmapFactory.decodeByteArray(image2,0,image2.length);
-            mSetImage2.setImageBitmap(bmp2);
-            byte[]  image3 = c.getBlob(2);
-            Bitmap bmp3 = BitmapFactory.decodeByteArray(image3,0,image3.length);
-            mSetImage3.setImageBitmap(bmp3);
-        }
-    }*/
 
     protected void onDestroy() {
         stopChronometer();
@@ -155,42 +141,29 @@ public class ResolverTareaActivity extends AppCompatActivity {
     public void onRadioButtonClicked(View view) {
     }
 
-    private String Consultar(String id) {
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(this,"bd_usuarios",null,1);
+    private Bitmap Consultar(String id) {
+        ConexionSQLiteHelper conn = new ConexionSQLiteHelper(this, "bd_usuarios", null, 1);
         SQLiteDatabase db = conn.getReadableDatabase();
 
-        String[] parametros={id};
+        String[] parametros = {id};
         String[] campos = {Utilidades.CAMPO_NOMBRE, Utilidades.CAMPO_ROL};
 
         String image = "";
 
         try {
-            Cursor cursor = db.query(Utilidades.TABLA_USUARIO,campos,Utilidades.CAMPO_ID+"=?", parametros, null, null,null);
+            Cursor cursor = db.query(Utilidades.TABLA_USUARIO, campos, Utilidades.CAMPO_ID + "=?", parametros, null, null, null);
             cursor.moveToFirst();
-            //campoNombre.setText(cursor.getString(0));
+
             image = cursor.getString(1);
             cursor.close();
 
-        }catch (Exception e){
-            Toast.makeText(getApplicationContext(),"El documento no existe",Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            Toast.makeText(getApplicationContext(), "El documento no existe", Toast.LENGTH_SHORT).show();
         }
 
-        return image;
+        byte[] imagenconvertida = Base64.decode(image, Base64.DEFAULT);
+        Bitmap decodedImage = BitmapFactory.decodeByteArray(imagenconvertida, 0, imagenconvertida.length);
+        return decodedImage;
     }
 
-    private Bitmap getBitmap(String encoded) {
-        byte[] dataDec = Base64.decode(encoded, Base64.DEFAULT);
-        String base64String = "";
-        try {
-
-            base64String = new String(dataDec, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-
-        } finally {
-            byte[] decodedString = Base64.decode(base64String, Base64.DEFAULT);
-            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-            return decodedByte;
-        }
-    }
 }

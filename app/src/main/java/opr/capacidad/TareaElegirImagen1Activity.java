@@ -42,9 +42,11 @@ import opr.capacidad.Utilidades.Utilidades;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static android.Manifest.permission.CAMERA;
 
-import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+
 
 public class TareaElegirImagen1Activity extends AppCompatActivity {
+
+
 
     private SQLiteDatabase db;
     private static String APP_DIRECTORY = "MyPictureApp/";
@@ -62,6 +64,8 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
     private Button mOptionButton2;
     private Button mOptionButton3;
 
+   private String imageString ;
+
     private Button Volver;
     private Button Crear;
 
@@ -69,12 +73,14 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
 
     private String mPath;
 
-
+    ConexionSQLiteHelper conn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_tarea_elegir_imagen1);
+
+
 
         mSetImage = (ImageView) findViewById(R.id.imageView);
         mSetImage2 = (ImageView) findViewById(R.id.imageView2);
@@ -82,6 +88,8 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
         mOptionButton = (Button) findViewById(R.id.btnCargarImagen);
         mOptionButton2 = (Button) findViewById(R.id.btnCargarImagen2);
         mOptionButton3 = (Button) findViewById(R.id.btnCargarImagen3);
+
+
 
         Volver = (Button) findViewById(R.id.btnVolver);
         Crear = (Button) findViewById(R.id.btnCrear);
@@ -126,22 +134,43 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
             }
         });
 
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.id.imageView);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] imageBytes = baos.toByteArray();
+         imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
 
-        db = this.openOrCreateDatabase("test.db",Context.MODE_PRIVATE,null);
-        db.execSQL("create table if not exists tb (a blob, b blob, c blob)");
+        SQLiteDatabase db=conn.getWritableDatabase();
+        try {
 
 
+            ContentValues values = new ContentValues();
+
+            values.put(Utilidades.CAMPO_NOMBRE_IMAGEN, imageString);
+
+
+            values.put(Utilidades.CAMPO_ID_IMAGEN, "");
+
+            Long idResultante = db.insert(Utilidades.TABLA_IMAGEN, Utilidades.CAMPO_ID_IMAGEN, values);
+
+            Toast.makeText(getApplicationContext(), "Id Registro: " + idResultante, Toast.LENGTH_SHORT).show();
+            db.close();
+
+        }catch (Exception e){
+            Log.e("Error","Error de cargar imagen"+e);
+        }
         Crear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast toast1 = Toast.makeText(getApplicationContext(), "Tarea creada", Toast.LENGTH_SHORT);
                 toast1.setGravity(Gravity.CENTER,0,0);
 
-                cargarImage("1","",mSetImage);
-                cargarImage("2","",mSetImage2);
-                cargarImage("3","",mSetImage3);
+                conn=new ConexionSQLiteHelper(getApplicationContext(),"bd_usuarios",null,1);
 
-                toast1.show();
+
+
+
+
             }
         });
         Volver.setOnClickListener(new View.OnClickListener() {
@@ -156,57 +185,37 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
 
 
 
+        //encode image to base64 string
+
+
+
     }
 
-    private void cargarImage(String id, String nombre, ImageView image) {
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(this,"bd_usuarios",null,1);
+/*
+    private void registrarImagenes() {
         SQLiteDatabase db=conn.getWritableDatabase();
-
-        Bitmap bitmap = ((BitmapDrawable)image.getDrawable()).getBitmap();
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-        byte[] byteArray = byteArrayOutputStream .toByteArray();
-        String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
-
-        //insert into usuario (id,nombre,telefono) values (123,'Cristian','85665223')
-
-        String insert="INSERT INTO "+ Utilidades.TABLA_USUARIO
-                +" ( " +Utilidades.CAMPO_ID+","+Utilidades.CAMPO_NOMBRE+","+Utilidades.CAMPO_ROL+")" +
-                " VALUES ('" + nombre + "', '"+nombre+"','"
-                +encoded+"')";
-
-        db.execSQL(insert);
+try {
 
 
-        db.close();
+    ContentValues values = new ContentValues();
+
+    values.put(Utilidades.CAMPO_NOMBRE_IMAGEN, imageString);
+
+
+    values.put(Utilidades.CAMPO_ID_IMAGEN, "");
+
+    Long idResultante = db.insert(Utilidades.TABLA_IMAGEN, Utilidades.CAMPO_ID_IMAGEN, values);
+
+    Toast.makeText(getApplicationContext(), "Id Registro: " + idResultante, Toast.LENGTH_SHORT).show();
+    db.close();
+
+}catch (Exception e){
+    Log.e("Error","Error de cargar imagen"+e);
+}
     }
+*/
 
-    public void saveImage (View view){
-        try {
-            FileInputStream fis = new FileInputStream("/storage/sdcard/DCIM/Facebook/FB_IMG_1531288629488.jpg");
-            FileInputStream fis2 = new FileInputStream("/storage/sdcard/DCIM/Facebook/FB_IMG_1531288636633.jpg");
-            FileInputStream fis3 = new FileInputStream("/storage/sdcard/DCIM/Facebook/FB_IMG_1531288647579.jpg");
-            byte[] image = new byte[fis.available()];
-            fis.read(image);
-            byte[] image2 = new byte[fis2.available()];
-            fis2.read(image2);
-            byte[] image3 = new byte[fis3.available()];
-            fis3.read(image3);
 
-            ContentValues values = new ContentValues();
-            values.put("a",image);
-            values.put("b",image2);
-            values.put("c",image3);
-            db.insert("tb",null, values);
-
-            fis.close();
-            fis2.close();
-            fis3.close();
-        }catch (Exception e){
-            e.printStackTrace();
-
-        }
-    }
 
 
     private boolean mayRequestStoragePermission() {
@@ -273,6 +282,7 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
                     + File.separator + imageName;
 
             File newFile = new File(mPath);
+
 
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             intent.putExtra(MediaStore.EXTRA_OUTPUT,Uri.fromFile(newFile));

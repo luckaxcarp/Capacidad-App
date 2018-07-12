@@ -40,7 +40,7 @@ public class ElegirTarea extends AppCompatActivity {
         Unir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent Unir = new Intent(ElegirTarea.this, ResolverTareaActivity.class);
+                Intent Unir = new Intent(ElegirTarea.this, PruebaTareaResolver.class);
                 startActivity(Unir);
             }
         });

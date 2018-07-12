@@ -47,7 +47,7 @@ public class RegistrarUsuario extends AppCompatActivity {
         //registrarUsuariosSql();
     }
 
-    private void registrarUsuariosSql() {
+    /*private void registrarUsuariosSql() {
         ConexionSQLiteHelper conn=new ConexionSQLiteHelper(this,"bd_usuarios",null,1);
 
         SQLiteDatabase db=conn.getWritableDatabase();
@@ -63,7 +63,7 @@ public class RegistrarUsuario extends AppCompatActivity {
 
 
         db.close();
-    }
+    }*/
 
 
     private void registrarUsuarios() {
