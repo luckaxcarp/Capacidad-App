@@ -146,12 +146,12 @@ public class ResolverTareaActivity extends AppCompatActivity {
         SQLiteDatabase db = conn.getReadableDatabase();
 
         String[] parametros = {id};
-        String[] campos = {Utilidades.CAMPO_NOMBRE, Utilidades.CAMPO_ROL};
+        String[] campos = {Utilidades.CAMPO_ID_IMAGEN, Utilidades.CAMPO_NOMBRE_IMAGEN};
 
         String image = "";
 
         try {
-            Cursor cursor = db.query(Utilidades.TABLA_USUARIO, campos, Utilidades.CAMPO_ID + "=?", parametros, null, null, null);
+            Cursor cursor = db.query(Utilidades.TABLA_IMAGEN, campos, Utilidades.CAMPO_ID_IMAGEN + "=?", parametros, null, null, null);
             cursor.moveToFirst();
 
             image = cursor.getString(1);

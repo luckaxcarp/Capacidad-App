@@ -158,11 +158,9 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
                     values.put(Utilidades.CAMPO_NOMBRE_IMAGEN, imageString);
 
 
-                    values.put(Utilidades.CAMPO_ID_IMAGEN, "");
+                    Long idResultante=db.insert(Utilidades.TABLA_IMAGEN,Utilidades.CAMPO_ID_IMAGEN,values);
 
-                    Long idResultante = db.insert(Utilidades.TABLA_IMAGEN, Utilidades.CAMPO_ID_IMAGEN, values);
-
-                    Toast.makeText(getApplicationContext(), "Id Registro: " + idResultante, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"Id Registro: "+idResultante,Toast.LENGTH_SHORT).show();
                     db.close();
 
                 }catch (Exception e){
