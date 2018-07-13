@@ -65,6 +65,8 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
     private Button mOptionButton3;
 
    private String imageString ;
+    private String imageString2 ;
+    private String imageString3 ;
 
     private Button Volver;
     private Button Crear;
@@ -149,6 +151,18 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
                 byte[] imageBytes = baos.toByteArray();
                 imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
 
+                ByteArrayOutputStream baos2 = new ByteArrayOutputStream();
+                Bitmap bitmap2 = ((BitmapDrawable) mSetImage2.getDrawable()).getBitmap();
+                bitmap2.compress(Bitmap.CompressFormat.JPEG, 100, baos2);
+                byte[] imageBytes2 = baos2.toByteArray();
+                imageString2 = Base64.encodeToString(imageBytes2, Base64.DEFAULT);
+
+                ByteArrayOutputStream baos3 = new ByteArrayOutputStream();
+                Bitmap bitmap3 = ((BitmapDrawable) mSetImage3.getDrawable()).getBitmap();
+                bitmap3.compress(Bitmap.CompressFormat.JPEG, 100, baos3);
+                byte[] imageBytes3 = baos3.toByteArray();
+                imageString3 = Base64.encodeToString(imageBytes3, Base64.DEFAULT);
+
                 SQLiteDatabase db=conn.getWritableDatabase();
                 try {
 
@@ -156,11 +170,17 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
                     ContentValues values = new ContentValues();
 
                     values.put(Utilidades.CAMPO_NOMBRE_IMAGEN, imageString);
-
-
                     Long idResultante=db.insert(Utilidades.TABLA_IMAGEN,Utilidades.CAMPO_ID_IMAGEN,values);
-
                     Toast.makeText(getApplicationContext(),"Id Registro: "+idResultante,Toast.LENGTH_SHORT).show();
+                    values.put(Utilidades.CAMPO_NOMBRE_IMAGEN, imageString2);
+                    Long idResultante2=db.insert(Utilidades.TABLA_IMAGEN,Utilidades.CAMPO_ID_IMAGEN,values);
+                    Toast.makeText(getApplicationContext(),"Id Registro: "+idResultante2,Toast.LENGTH_SHORT).show();
+                    values.put(Utilidades.CAMPO_NOMBRE_IMAGEN, imageString3);
+                    Long idResultante3=db.insert(Utilidades.TABLA_IMAGEN,Utilidades.CAMPO_ID_IMAGEN,values);
+                    Toast.makeText(getApplicationContext(),"Id Registro: "+idResultante3,Toast.LENGTH_SHORT).show();
+
+
+
                     db.close();
 
                 }catch (Exception e){
