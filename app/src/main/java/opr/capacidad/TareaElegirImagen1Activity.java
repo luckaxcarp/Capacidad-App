@@ -179,9 +179,9 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
                     Long idResultante3=db.insert(Utilidades.TABLA_IMAGEN,Utilidades.CAMPO_ID_IMAGEN,values);
                     Toast.makeText(getApplicationContext(),"Id Registro: "+idResultante3,Toast.LENGTH_SHORT).show();
 
-
-
                     db.close();
+
+
 
                 }catch (Exception e){
                     Log.e("Error","Error de cargar imagen"+e);
@@ -203,37 +203,14 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
         });
 
 
+      /*  Intent intent = new Intent(TareaElegirImagen1Activity.this, ResolverTareaActivity.class);
+        intent.putExtra("variable_integer", idResultante);
+        intent.putExtra("variable_integer2", idResultante2);
+        intent.putExtra("variable_integer3", idResultante3);
 
-
-        //encode image to base64 string
-
-
-
+        startActivity(intent);*/
     }
 
-/*
-    private void registrarImagenes() {
-        SQLiteDatabase db=conn.getWritableDatabase();
-try {
-
-
-    ContentValues values = new ContentValues();
-
-    values.put(Utilidades.CAMPO_NOMBRE_IMAGEN, imageString);
-
-
-    values.put(Utilidades.CAMPO_ID_IMAGEN, "");
-
-    Long idResultante = db.insert(Utilidades.TABLA_IMAGEN, Utilidades.CAMPO_ID_IMAGEN, values);
-
-    Toast.makeText(getApplicationContext(), "Id Registro: " + idResultante, Toast.LENGTH_SHORT).show();
-    db.close();
-
-}catch (Exception e){
-    Log.e("Error","Error de cargar imagen"+e);
-}
-    }
-*/
 
 
 

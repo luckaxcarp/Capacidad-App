@@ -42,6 +42,7 @@ public class ResolverTareaActivity extends AppCompatActivity {
     private RadioButton rightChoice;
     private Button btnSubmit;
     private double resolutionTime;
+    private Integer constante;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +59,7 @@ public class ResolverTareaActivity extends AppCompatActivity {
         rbImg2 = findViewById(R.id.radio_img2);
         rbImg3 = findViewById(R.id.radio_img3);
         btnSubmit = findViewById(R.id.btnSubmit);
+
 
         // <Load data
         tarea = new Tarea();
@@ -144,6 +146,8 @@ public class ResolverTareaActivity extends AppCompatActivity {
     private Bitmap Consultar(String id) {
         ConexionSQLiteHelper conn = new ConexionSQLiteHelper(this, "bd_usuarios", null, 1);
         SQLiteDatabase db = conn.getReadableDatabase();
+
+
 
         String[] parametros = {id};
         String[] campos = {Utilidades.CAMPO_ID_IMAGEN, Utilidades.CAMPO_NOMBRE_IMAGEN};
