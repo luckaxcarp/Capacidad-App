@@ -144,7 +144,7 @@ public class ResolverTareaActivity extends AppCompatActivity {
     }
 
     private Bitmap Consultar(String id) {
-        ConexionSQLiteHelper conn = new ConexionSQLiteHelper(this, "bd_usuarios", null, 3);
+        ConexionSQLiteHelper conn = new ConexionSQLiteHelper(this, "bd_usuarios", null, 1);
         SQLiteDatabase db = conn.getReadableDatabase();
 
 
