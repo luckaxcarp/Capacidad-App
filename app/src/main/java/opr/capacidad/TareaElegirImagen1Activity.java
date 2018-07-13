@@ -134,31 +134,7 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
             }
         });
 
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.id.imageView);
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] imageBytes = baos.toByteArray();
-         imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
 
-        SQLiteDatabase db=conn.getWritableDatabase();
-        try {
-
-
-            ContentValues values = new ContentValues();
-
-            values.put(Utilidades.CAMPO_NOMBRE_IMAGEN, imageString);
-
-
-            values.put(Utilidades.CAMPO_ID_IMAGEN, "");
-
-            Long idResultante = db.insert(Utilidades.TABLA_IMAGEN, Utilidades.CAMPO_ID_IMAGEN, values);
-
-            Toast.makeText(getApplicationContext(), "Id Registro: " + idResultante, Toast.LENGTH_SHORT).show();
-            db.close();
-
-        }catch (Exception e){
-            Log.e("Error","Error de cargar imagen"+e);
-        }
         Crear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -166,6 +142,32 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
                 toast1.setGravity(Gravity.CENTER,0,0);
 
                 conn=new ConexionSQLiteHelper(getApplicationContext(),"bd_usuarios",null,1);
+
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                Bitmap bitmap = ((BitmapDrawable) mSetImage.getDrawable()).getBitmap();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                byte[] imageBytes = baos.toByteArray();
+                imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+
+                SQLiteDatabase db=conn.getWritableDatabase();
+                try {
+
+
+                    ContentValues values = new ContentValues();
+
+                    values.put(Utilidades.CAMPO_NOMBRE_IMAGEN, imageString);
+
+
+                    values.put(Utilidades.CAMPO_ID_IMAGEN, "");
+
+                    Long idResultante = db.insert(Utilidades.TABLA_IMAGEN, Utilidades.CAMPO_ID_IMAGEN, values);
+
+                    Toast.makeText(getApplicationContext(), "Id Registro: " + idResultante, Toast.LENGTH_SHORT).show();
+                    db.close();
+
+                }catch (Exception e){
+                    Log.e("Error","Error de cargar imagen"+e);
+                }
 
 
 
