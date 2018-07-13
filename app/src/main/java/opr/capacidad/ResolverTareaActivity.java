@@ -28,7 +28,6 @@ import opr.capacidad.model.Tarea;
 
 public class ResolverTareaActivity extends AppCompatActivity {
 
-    private int idTarea;
     private Tarea tarea = null;
     private TextView tvTittle;
     private TextView tvConsigna;
@@ -68,9 +67,10 @@ public class ResolverTareaActivity extends AppCompatActivity {
 
         tvTittle.setText(tarea.getTittle());
         tvConsigna.setText(tarea.getConsigna());
-        ivImg1.setImageBitmap(Consultar("1")); //tarea.getImage1()
-        ivImg2.setImageBitmap(Consultar("2"));
-        ivImg3.setImageBitmap(Consultar("3"));
+        ivImg1.setImageBitmap(ultimoRegistro("2")); //tarea.getImage1()
+        ivImg2.setImageBitmap(ultimoRegistro("1"));
+        ivImg3.setImageBitmap(ultimoRegistro(""));
+
 
         switch (tarea.getRightChoice()) {
             case 1:
@@ -144,7 +144,7 @@ public class ResolverTareaActivity extends AppCompatActivity {
     }
 
     private Bitmap Consultar(String id) {
-        ConexionSQLiteHelper conn = new ConexionSQLiteHelper(this, "bd_usuarios", null, 1);
+        ConexionSQLiteHelper conn = new ConexionSQLiteHelper(this, "bd_usuarios", null, 3);
         SQLiteDatabase db = conn.getReadableDatabase();
 
 
@@ -163,10 +163,50 @@ public class ResolverTareaActivity extends AppCompatActivity {
 
         } catch (Exception e) {
             Toast.makeText(getApplicationContext(), "El documento no existe", Toast.LENGTH_SHORT).show();
+            Log.i("SQLite", e.toString());
+        } finally {
+            db.close();
         }
 
         byte[] imagenconvertida = Base64.decode(image, Base64.DEFAULT);
         Bitmap decodedImage = BitmapFactory.decodeByteArray(imagenconvertida, 0, imagenconvertida.length);
+        return decodedImage;
+    }
+
+    private Bitmap ultimoRegistro(String id) {
+        ConexionSQLiteHelper conn = new ConexionSQLiteHelper(this, "bd_usuarios", null, 1);
+        SQLiteDatabase db = conn.getReadableDatabase();
+
+        String image = "";
+        String otherRecord = "";
+
+        if (!id.equalsIgnoreCase("")) {
+            Log.i("ELEGIR REGISTRO", id);
+            otherRecord = " - " + id;
+        }
+
+        try {
+            String selectQuery = "SELECT " + Utilidades.CAMPO_NOMBRE_IMAGEN +  " FROM " + Utilidades.TABLA_IMAGEN +  " WHERE " +
+                    Utilidades.CAMPO_ID_IMAGEN + " = (SELECT MAX(" + Utilidades.CAMPO_ID_IMAGEN +
+                    ")  FROM " + Utilidades.TABLA_IMAGEN + ")" + otherRecord + ";";
+
+            Log.i("SQLite",selectQuery);
+            Cursor cursor = db.rawQuery(selectQuery, null);
+            cursor.moveToLast();
+
+            image = cursor.getString(0);
+            cursor.close();
+
+        } catch (Exception e) {
+            Toast.makeText(getApplicationContext(), "El documento no existe", Toast.LENGTH_SHORT).show();
+            Log.i("SQLite", e.toString());
+        } finally {
+            db.close();
+        }
+
+        byte[] imagenconvertida = Base64.decode(image, Base64.DEFAULT);
+        Bitmap decodedImage = BitmapFactory.decodeByteArray(imagenconvertida, 0, imagenconvertida.length);
+        Log.i("BASE64",image);
         return decodedImage;
     }
 
