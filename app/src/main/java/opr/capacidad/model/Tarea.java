@@ -65,7 +65,7 @@ public class Tarea {
 
     public void getDataById(int id) {
         this.tittle = "Título";
-        this.consigna = "Consigna de la tarea";
+        this.consigna = "Consigna";
         this.image1 = null;
         this.image2 = null;
         this.image3 = null;

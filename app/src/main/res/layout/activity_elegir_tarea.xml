@@ -22,7 +22,7 @@
 
         android:layout_alignParentTop="true"
         android:layout_marginTop="135dp"
-        android:text="Unir con flechas" />
+        android:text="Resolver Paciente" />
 
     <Button
         android:id="@+id/btnAdjuntarArchivos"

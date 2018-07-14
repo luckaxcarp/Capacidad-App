@@ -26,43 +26,41 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="TextView"
+        android:text="Consigna"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tarea_tittle" />
 
     <ImageView
         android:id="@+id/iv_img1"
-        android:layout_width="@dimen/width_img_elegirimagen"
-        android:layout_height="@dimen/height_img_elegirimagen"
-        android:layout_marginLeft="32dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
+        android:layout_width="163dp"
+        android:layout_height="173dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tarea_consigna"
         app:srcCompat="@drawable/ic_menu_gallery" />
 
     <ImageView
         android:id="@+id/iv_img2"
-        android:layout_width="@dimen/width_img_elegirimagen"
-        android:layout_height="@dimen/height_img_elegirimagen"
+        android:layout_width="142dp"
+        android:layout_height="154dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
         app:layout_constraintEnd_toStartOf="@+id/iv_img3"
+        app:layout_constraintHorizontal_bias="0.56"
         app:layout_constraintStart_toEndOf="@+id/iv_img1"
-        app:layout_constraintTop_toBottomOf="@+id/tarea_consigna"
+        app:layout_constraintTop_toBottomOf="@+id/iv_img1"
         app:srcCompat="@drawable/ic_menu_gallery" />
 
     <ImageView
         android:id="@+id/iv_img3"
-        android:layout_width="@dimen/width_img_elegirimagen"
-        android:layout_height="@dimen/height_img_elegirimagen"
-        android:layout_marginEnd="32dp"
-        android:layout_marginRight="32dp"
-        android:layout_marginTop="32dp"
+        android:layout_width="155dp"
+        android:layout_height="173dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tarea_consigna"
         app:srcCompat="@drawable/ic_menu_gallery" />
@@ -75,10 +73,10 @@
         android:layout_marginLeft="48dp"
         android:layout_marginRight="48dp"
         android:layout_marginStart="48dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="12dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iv_img2">
 
@@ -107,11 +105,15 @@
         android:id="@+id/btnSubmit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="144dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="144dp"
+        android:layout_marginTop="8dp"
         android:text="@string/btnSubmit"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.014"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
 
 
