@@ -1,43 +1,36 @@
 package opr.capacidad;
 
 import android.annotation.TargetApi;
-import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.PersistableBundle;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
-import android.content.Context;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 
-import opr.capacidad.Utilidades.Utilidades;
+import opr.capacidad.Data.WebServerConection;
 
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static android.Manifest.permission.CAMERA;
@@ -46,9 +39,6 @@ import static android.Manifest.permission.CAMERA;
 
 public class TareaElegirImagen1Activity extends AppCompatActivity {
 
-
-
-    private SQLiteDatabase db;
     private static String APP_DIRECTORY = "MyPictureApp/";
     private static String MEDIA_DIRECTORY = APP_DIRECTORY + "PictureApp/";
 
@@ -59,30 +49,28 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
     private ImageView mSetImage;
     private ImageView mSetImage2;
     private ImageView mSetImage3;
-    private ImageView mSetImage4;
+    private ImageView imageViewAuxiliar;
     private Button mOptionButton;
     private Button mOptionButton2;
     private Button mOptionButton3;
+    private EditText viewConsigna;
+    private EditText viewFProgramada;
 
-   private String imageString ;
-    private String imageString2 ;
-    private String imageString3 ;
+    private String imageString;
+    private String imageString2;
+    private String imageString3;
 
     private Button Volver;
     private Button Crear;
 
-    private RelativeLayout mRlView;
+    private ConstraintLayout layout;
 
     private String mPath;
-
-    ConexionSQLiteHelper conn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_tarea_elegir_imagen1);
-
-
 
         mSetImage = (ImageView) findViewById(R.id.imageView);
         mSetImage2 = (ImageView) findViewById(R.id.imageView2);
@@ -90,14 +78,13 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
         mOptionButton = (Button) findViewById(R.id.btnCargarImagen);
         mOptionButton2 = (Button) findViewById(R.id.btnCargarImagen2);
         mOptionButton3 = (Button) findViewById(R.id.btnCargarImagen3);
-
-
+        viewConsigna = findViewById(R.id.etConsigna);
+        viewFProgramada = findViewById(R.id.etDate);
 
         Volver = (Button) findViewById(R.id.btnVolver);
         Crear = (Button) findViewById(R.id.btnCrear);
 
-
-        mRlView = (RelativeLayout) findViewById(R.id.rl_view);
+        layout = findViewById(R.id.content_tarea_elegir_imagen1);
 
         if (mayRequestStoragePermission()){
             mOptionButton.setEnabled(true);
@@ -115,7 +102,7 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Log.i("INFO","btn1");
-                mSetImage4 = mSetImage;
+                imageViewAuxiliar = mSetImage;
                 showOptions();
             }
         });
@@ -123,7 +110,7 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Log.i("INFO","btn2");
-                mSetImage4 = mSetImage2;
+                imageViewAuxiliar = mSetImage2;
                 showOptions();
             }
         });
@@ -131,7 +118,7 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Log.i("INFO","btn3");
-                mSetImage4 = mSetImage3;
+                imageViewAuxiliar = mSetImage3;
                 showOptions();
             }
         });
@@ -140,12 +127,11 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
         Crear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast toast1 = Toast.makeText(getApplicationContext(), "Tarea creada", Toast.LENGTH_SHORT);
-                toast1.setGravity(Gravity.CENTER,0,0);
+                Log.i("CREAR BUTTON", "On click");
 
-                conn=new ConexionSQLiteHelper(getApplicationContext(),"bd_usuarios",null,1);
+                WebServerConection conn = new WebServerConection(TareaElegirImagen1Activity.this);
 
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                /*ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 Bitmap bitmap = ((BitmapDrawable) mSetImage.getDrawable()).getBitmap();
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                 byte[] imageBytes = baos.toByteArray();
@@ -161,35 +147,27 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
                 Bitmap bitmap3 = ((BitmapDrawable) mSetImage3.getDrawable()).getBitmap();
                 bitmap3.compress(Bitmap.CompressFormat.JPEG, 100, baos3);
                 byte[] imageBytes3 = baos3.toByteArray();
-                imageString3 = Base64.encodeToString(imageBytes3, Base64.DEFAULT);
+                imageString3 = Base64.encodeToString(imageBytes3, Base64.DEFAULT);*/
 
-                SQLiteDatabase db=conn.getWritableDatabase();
-                try {
+                Log.i("CREAR", "consigna: " + viewConsigna.getText().toString() + ", fecha programada: " + viewFProgramada.getText().toString());
 
+                conn.sendTareaElegirImagen(viewConsigna.getText().toString(),
+                        viewFProgramada.getText().toString(),"1","path1",
+                        "path2", "path3", "2");
 
-                    ContentValues values = new ContentValues();
+                Log.i("CONECTION" , "Error = " + String.valueOf(conn.isErrorState()));
 
-                    values.put(Utilidades.CAMPO_NOMBRE_IMAGEN, imageString);
-                    Long idResultante=db.insert(Utilidades.TABLA_IMAGEN,Utilidades.CAMPO_ID_IMAGEN,values);
-                    Toast.makeText(getApplicationContext(),"Id Registro: "+idResultante,Toast.LENGTH_SHORT).show();
-                    values.put(Utilidades.CAMPO_NOMBRE_IMAGEN, imageString2);
-                    Long idResultante2=db.insert(Utilidades.TABLA_IMAGEN,Utilidades.CAMPO_ID_IMAGEN,values);
-                    Toast.makeText(getApplicationContext(),"Id Registro: "+idResultante2,Toast.LENGTH_SHORT).show();
-                    values.put(Utilidades.CAMPO_NOMBRE_IMAGEN, imageString3);
-                    Long idResultante3=db.insert(Utilidades.TABLA_IMAGEN,Utilidades.CAMPO_ID_IMAGEN,values);
-                    Toast.makeText(getApplicationContext(),"Id Registro: "+idResultante3,Toast.LENGTH_SHORT).show();
-
-                    db.close();
-                }catch (Exception e){
-                    Log.e("Error","Error de cargar imagen"+e);
+                if (conn.isErrorState()) {
+                    Log.e("Error", conn.getConectionResponse());
+                    Toast toast1 = Toast.makeText(getApplicationContext(), "Error al crear la tarea", Toast.LENGTH_SHORT);
+                    toast1.setGravity(Gravity.CENTER,0,0);
+                } else {
+                    Toast toast1 = Toast.makeText(getApplicationContext(), "Tarea creada exitosamente", Toast.LENGTH_SHORT);
+                    toast1.setGravity(Gravity.CENTER,0,0);
                 }
-
-
-
-
-
             }
         });
+
         Volver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -222,7 +200,7 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
             return true;
         }
         if ((shouldShowRequestPermissionRationale(WRITE_EXTERNAL_STORAGE)) || (shouldShowRequestPermissionRationale(CAMERA))){
-            Snackbar.make(mRlView,"Los permisos son necesarios para poder usar la aplicacion.",Snackbar.LENGTH_INDEFINITE).setAction(android.R.string.ok, new View.OnClickListener() {
+            Snackbar.make(layout,"Los permisos son necesarios para poder usar la aplicacion.",Snackbar.LENGTH_INDEFINITE).setAction(android.R.string.ok, new View.OnClickListener() {
                 @TargetApi(Build.VERSION_CODES.M)
                 @Override
                 public void onClick(View v) {
@@ -317,23 +295,19 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
                                 });
 
                         Bitmap bitmap = BitmapFactory.decodeFile(mPath);
-                        mSetImage4.setImageBitmap(bitmap);
+                        imageViewAuxiliar.setImageBitmap(bitmap);
 
 
                         break;
                     case SELECT_PICTURE:
                         Uri path = data.getData();
-                        mSetImage4.setImageURI(path);
+                        imageViewAuxiliar.setImageURI(path);
 
 
                         break;
 
                 }
             }
-
-
-
-
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

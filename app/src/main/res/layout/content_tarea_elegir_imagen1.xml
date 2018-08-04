@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/rl_view"
+    android:id="@+id/content_tarea_elegir_imagen1"
     android:paddingLeft="16dp"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="16dp"
@@ -19,136 +19,161 @@
         android:layout_width="97dp"
         android:layout_height="36dp"
 
-        android:layout_alignStart="@+id/imageView3"
-        android:layout_below="@+id/imageView"
         android:text="Cargar"
-        android:layout_alignLeft="@+id/imageView2" />
+        app:layout_constraintStart_toStartOf="@+id/imageView3"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:layout_constraintLeft_toLeftOf="@+id/imageView2" />
 
     <Button
         android:id="@+id/btnCargarImagen2"
         android:layout_width="97dp"
         android:layout_height="36dp"
-        android:layout_alignTop="@+id/btnCargarImagen"
-        android:layout_centerHorizontal="true"
-        android:text="Cargar" />
+        android:text="Cargar"
+        app:layout_constraintTop_toTopOf="@+id/btnCargarImagen"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 
     <Button
         android:id="@+id/btnCargarImagen"
         android:layout_width="97dp"
         android:layout_height="36dp"
 
-        android:layout_below="@+id/imageView"
-        android:text="Cargar" />
+        android:text="Cargar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="97dp"
         android:layout_height="108dp"
 
-        android:layout_alignStart="@+id/textView"
-        android:layout_alignTop="@+id/imageView2"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
         app:srcCompat="@android:drawable/ic_menu_gallery"
-        android:layout_alignLeft="@+id/textView" />
+        app:layout_constraintTop_toTopOf="@+id/imageView2"
+        app:layout_constraintStart_toStartOf="@+id/textView"
+        app:layout_constraintLeft_toLeftOf="@+id/textView" />
 
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="97dp"
         android:layout_height="108dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
         android:layout_marginTop="143dp"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
-        app:srcCompat="@android:drawable/ic_menu_gallery" />
+        app:srcCompat="@android:drawable/ic_menu_gallery"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="97dp"
         android:layout_height="108dp"
-        android:layout_alignEnd="@+id/editText"
 
-        android:layout_alignTop="@+id/imageView"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
         app:srcCompat="@android:drawable/ic_menu_gallery"
-        android:layout_alignRight="@+id/editText" />
+        app:layout_constraintTop_toTopOf="@+id/imageView"
+        app:layout_constraintRight_toRightOf="@+id/imageView2" />
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/etConsigna"
         android:layout_width="334dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
         android:layout_marginTop="13dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Consigna" />
+        android:text="Consigna"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="368dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
         android:layout_marginTop="87dp"
         android:text="Agregue las imagenes e indique la correcta."
         android:textAppearance="@android:style/TextAppearance.Holo.Medium"
-        android:textIsSelectable="false" />
+        android:textIsSelectable="false"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 
     <RadioButton
         android:id="@+id/radioButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/btnCargarImagen"
-        android:layout_centerHorizontal="true"
-        android:text="" />
+        android:layout_marginTop="8dp"
+        android:text=""
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnCargarImagen2" />
 
     <RadioButton
         android:id="@+id/radioButton3"
         android:layout_width="71dp"
-        android:layout_height="wrap_content"
+        android:layout_height="29dp"
 
-        android:layout_alignParentStart="true"
-
-        android:layout_below="@+id/btnCargarImagen3"
+        android:layout_marginLeft="27dp"
         android:layout_marginStart="27dp"
+        android:layout_marginTop="8dp"
         android:text=""
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="27dp" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnCargarImagen" />
 
     <RadioButton
         android:id="@+id/radioButton2"
         android:layout_width="73dp"
-        android:layout_height="wrap_content"
+        android:layout_height="28dp"
 
-        android:layout_alignEnd="@+id/textView"
-        android:layout_below="@+id/btnCargarImagen3"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
         android:text=""
-        android:layout_alignRight="@+id/textView" />
+        app:layout_constraintEnd_toEndOf="@+id/textView"
+        app:layout_constraintRight_toRightOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/btnCargarImagen3" />
 
     <Button
         android:id="@+id/btnCrear"
-        android:layout_width="269dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
-
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="89dp"
-        android:text="Crear"/>
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="24dp"
+        android:text="Crear"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etDate" />
 
     <Button
         android:id="@+id/btnVolver"
-        android:layout_width="266dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
 
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="26dp"
-        android:text="Volver" />
+        android:layout_marginTop="24dp"
+        android:text="Volver"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etDate" />
+
+    <EditText
+        android:id="@+id/etDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:ems="10"
+        android:inputType="date"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/radioButton" />
 
 
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>
