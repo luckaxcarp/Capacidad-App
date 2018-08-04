@@ -180,9 +180,6 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),"Id Registro: "+idResultante3,Toast.LENGTH_SHORT).show();
 
                     db.close();
-
-
-
                 }catch (Exception e){
                     Log.e("Error","Error de cargar imagen"+e);
                 }
