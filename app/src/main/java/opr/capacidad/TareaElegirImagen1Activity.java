@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
@@ -16,17 +17,36 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
 
 import opr.capacidad.Data.WebServerConection;
 
@@ -44,6 +64,10 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
     private final int PHOTO_CODE = 200;
     private final int SELECT_PICTURE = 300;
 
+    private String idTerapia;
+
+    private TextInputEditText etConsigna;
+    private EditText viewFProgramada;
     private ImageView mSetImage;
     private ImageView mSetImage2;
     private ImageView mSetImage3;
@@ -51,12 +75,22 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
     private Button mOptionButton;
     private Button mOptionButton2;
     private Button mOptionButton3;
-    private EditText viewConsigna;
-    private EditText viewFProgramada;
+    private RadioButton rbImage1;
+    private RadioButton rbImage2;
+    private RadioButton rbImage3;
+    private RadioGroup radioGroup;
+
+    private static final int RB1_ID = 1;
+    private static final int RB2_ID = 2;
+    private static final int RB3_ID = 3;
 
     private String imageString;
     private String imageString2;
     private String imageString3;
+    private String rightChoice;
+
+    private JsonObjectRequest jsonObjectRequest;
+    private RequestQueue request;
 
     private Button Volver;
     private Button Crear;
@@ -70,17 +104,20 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_tarea_elegir_imagen1);
 
-        mSetImage = (ImageView) findViewById(R.id.imageView);
-        mSetImage2 = (ImageView) findViewById(R.id.imageView2);
-        mSetImage3 = (ImageView) findViewById(R.id.imageView3);
-        mOptionButton = (Button) findViewById(R.id.btnCargarImagen);
-        mOptionButton2 = (Button) findViewById(R.id.btnCargarImagen2);
-        mOptionButton3 = (Button) findViewById(R.id.btnCargarImagen3);
-        viewConsigna = findViewById(R.id.etConsigna);
+        etConsigna = findViewById(R.id.text_input_consigna);
+        mSetImage = findViewById(R.id.imageView);
+        mSetImage2 = findViewById(R.id.imageView2);
+        mSetImage3 = findViewById(R.id.imageView3);
+        mOptionButton = findViewById(R.id.btnCargarImagen);
+        mOptionButton2 = findViewById(R.id.btnCargarImagen2);
+        mOptionButton3 = findViewById(R.id.btnCargarImagen3);
+        rbImage1 = findViewById(R.id.radio_img1);
+        rbImage2 = findViewById(R.id.radio_img2);
+        rbImage3 = findViewById(R.id.radio_img3);
+        radioGroup = findViewById(R.id.radioGroup);
         viewFProgramada = findViewById(R.id.etDate);
-
-        Volver = (Button) findViewById(R.id.btnVolver);
-        Crear = (Button) findViewById(R.id.btnCrear);
+        Volver = findViewById(R.id.btnVolver);
+        Crear = findViewById(R.id.btnCrear);
 
         layout = findViewById(R.id.content_tarea_elegir_imagen1);
 
@@ -121,47 +158,41 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
             }
         });
 
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                // checkedId is the RadioButton selected
+            }
+        });
+
 
         Crear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.i("CREAR BUTTON", "On click");
 
-                WebServerConection conn = new WebServerConection(TareaElegirImagen1Activity.this);
+                idTerapia = "1";
 
-                /*ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                Bitmap bitmap = ((BitmapDrawable) mSetImage.getDrawable()).getBitmap();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-                byte[] imageBytes = baos.toByteArray();
-                imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+                imageString = bitmapToBase64(((BitmapDrawable) mSetImage.getDrawable()).getBitmap());
+                imageString2 = bitmapToBase64(((BitmapDrawable) mSetImage2.getDrawable()).getBitmap());
+                imageString3 = bitmapToBase64(((BitmapDrawable) mSetImage3.getDrawable()).getBitmap());
 
-                ByteArrayOutputStream baos2 = new ByteArrayOutputStream();
-                Bitmap bitmap2 = ((BitmapDrawable) mSetImage2.getDrawable()).getBitmap();
-                bitmap2.compress(Bitmap.CompressFormat.JPEG, 100, baos2);
-                byte[] imageBytes2 = baos2.toByteArray();
-                imageString2 = Base64.encodeToString(imageBytes2, Base64.DEFAULT);
-
-                ByteArrayOutputStream baos3 = new ByteArrayOutputStream();
-                Bitmap bitmap3 = ((BitmapDrawable) mSetImage3.getDrawable()).getBitmap();
-                bitmap3.compress(Bitmap.CompressFormat.JPEG, 100, baos3);
-                byte[] imageBytes3 = baos3.toByteArray();
-                imageString3 = Base64.encodeToString(imageBytes3, Base64.DEFAULT);*/
-
-                Log.i("CREAR", "consigna: " + viewConsigna.getText().toString() + ", fecha programada: " + viewFProgramada.getText().toString());
-
-                conn.sendTareaElegirImagen(viewConsigna.getText().toString(),
-                        viewFProgramada.getText().toString(),"1","path1",
-                        "path2", "path3", "2");
-
-                Log.i("CONECTION" , "Error = " + String.valueOf(conn.isErrorState()));
-
-                if (conn.isErrorState()) {
-                    Log.e("Error", conn.getConnResponse().toString());
-                    Toast toast1 = Toast.makeText(getApplicationContext(), "Error al crear la tarea", Toast.LENGTH_SHORT);
-                    toast1.setGravity(Gravity.CENTER,0,0);
-                } else {
-                    Toast.makeText(getApplicationContext(), "Tarea creada exitosamente", Toast.LENGTH_SHORT).show();
+                try {
+                    imageString = URLEncoder.encode(imageString, "utf-8");
+                    imageString2 = URLEncoder.encode(imageString2, "utf-8");
+                    imageString3 = URLEncoder.encode(imageString3, "utf-8");
+                } catch (UnsupportedEncodingException e) {
+                    Log.i("SET DATA", e.toString());
                 }
+
+                int selectedId = radioGroup.getCheckedRadioButtonId();
+                if (selectedId != -1) {
+                    RadioButton selectedRadioButton = findViewById(selectedId);
+                    rightChoice = selectedRadioButton.getText().toString();
+                }
+
+                //sendTarea();
+                sendImages();
             }
         });
 
@@ -183,8 +214,79 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
         startActivity(intent);*/
     }
 
+    private void sendTarea() {
+        request = Volley.newRequestQueue(TareaElegirImagen1Activity.this);
 
+        Log.i("CREAR", "consigna: " + etConsigna.getText().toString() +
+                ", fecha programada: " + viewFProgramada.getText().toString());
 
+        String url = WebServerConection.generateUrlCreateTarea(etConsigna.getText().toString(),
+                viewFProgramada.getText().toString(),idTerapia,"path1",
+                "path2", "path3", rightChoice);
+
+        jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url,
+                null, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.i("RESPONSE", response.toString());
+                Toast.makeText(getApplicationContext(), "Tarea creada exitosamente", Toast.LENGTH_SHORT).show();
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // TODO: Handle error
+                Log.i("RESPONSE", error.toString());
+                Toast.makeText(getApplicationContext(), "Error al crear la tarea", Toast.LENGTH_SHORT);
+            }
+        });
+        request.add(jsonObjectRequest);
+    }
+
+    private void sendImages() {
+        String url = "http://192.168.1.43/capacidad/ins-tarea-elegirimagen.php";
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.i(" RESPONSE", response);
+                Toast.makeText(TareaElegirImagen1Activity.this, "Enviado",Toast.LENGTH_SHORT).show();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.i(" RESPONSE", error.toString());
+                Toast.makeText(TareaElegirImagen1Activity.this, "Error al enviar",Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<String, String>();
+
+                params.put("consigna",etConsigna.getText().toString());
+                params.put("f_programada",viewFProgramada.getText().toString());
+                params.put("tipo","1");
+                params.put("id_terapia",idTerapia);
+                params.put("ubicacion1",imageString);
+                params.put("ubicacion2",imageString2);
+                params.put("ubicacion3",imageString3);
+                params.put("imagencorrecta",rightChoice);
+
+                return params;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+    }
+
+    private String bitmapToBase64(Bitmap image) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] imageBytes = baos.toByteArray();
+        return Base64.encodeToString(imageBytes, Base64.DEFAULT);
+    }
 
 
     private boolean mayRequestStoragePermission() {

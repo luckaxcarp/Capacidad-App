@@ -30,4 +30,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="btnSubmit">RESOLVER</string>
     <string name="title_activity_todo_usuario">TodoUsuario</string>
+    <string name="label_load_images">Agregue las imagenes e indique la correcta.</string>
+    <string name="inputConsigna">Consigna</string>
 </resources>

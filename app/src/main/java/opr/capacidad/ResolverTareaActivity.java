@@ -44,6 +44,8 @@ import static android.provider.ContactsContract.CommonDataKinds.Website.URL;
 public class ResolverTareaActivity extends AppCompatActivity implements Response.Listener<JSONObject>,
         Response.ErrorListener {
 
+    private String idTarea;
+
     private Tarea tarea = null;
     private TextView tvTittle;
     private TextView tvConsigna;
@@ -134,43 +136,10 @@ public class ResolverTareaActivity extends AppCompatActivity implements Response
         resolutionTime = time;
     }
 
-    public void onRadioButtonClicked(View view) {
-    }
-
-    private Bitmap Consultar(String id) {
-        ConexionSQLiteHelper conn = new ConexionSQLiteHelper(this, "bd_usuarios", null, 1);
-        SQLiteDatabase db = conn.getReadableDatabase();
-
-
-
-        String[] parametros = {id};
-        String[] campos = {Utilidades.CAMPO_ID_IMAGEN, Utilidades.CAMPO_NOMBRE_IMAGEN};
-
-        String image = "";
-
-        try {
-            Cursor cursor = db.query(Utilidades.TABLA_IMAGEN, campos, Utilidades.CAMPO_ID_IMAGEN + "=?", parametros, null, null, null);
-            cursor.moveToFirst();
-
-            image = cursor.getString(1);
-            cursor.close();
-
-        } catch (Exception e) {
-            Toast.makeText(getApplicationContext(), "El documento no existe", Toast.LENGTH_SHORT).show();
-            Log.i("SQLite", e.toString());
-        } finally {
-            db.close();
-        }
-
-        byte[] imagenconvertida = Base64.decode(image, Base64.DEFAULT);
-        Bitmap decodedImage = BitmapFactory.decodeByteArray(imagenconvertida, 0, imagenconvertida.length);
-        return decodedImage;
-    }
-
     private void loadData() {
         tarea = new Tarea();
         WebServerConection webServerConection = new WebServerConection(this);
-        String url = webServerConection.generateUrlResolverTarea("13");
+        String url = webServerConection.generateUrlResolverTarea("20");
 
         RequestQueue queue = Volley.newRequestQueue(this);
 
@@ -187,16 +156,35 @@ public class ResolverTareaActivity extends AppCompatActivity implements Response
                             json = response.getJSONArray("tarea");
                             jsonObject = json.getJSONObject(0);
                         } catch (JSONException e) {
-                            e.printStackTrace();
+                            Log.i("JSON", e.toString());
                         }
 
                         //tvTittle.setText("Vacío");//tarea.getTittle()
                         tvConsigna.setText(jsonObject.optString("consigna"));
+
+                        try {
+                            json = response.getJSONArray("1");
+                            jsonObject = json.getJSONObject(0);
+                        } catch (JSONException e) {
+                            Log.i("JSON", e.toString());
+                        }
+                        Toast.makeText(ResolverTareaActivity.this,
+                                "Imagen 1: " + jsonObject.optString("ubicacion") +
+                                        " Imagen 2: " + jsonObject.optString("2") +
+                                        " Imagen 3: " + jsonObject.optString("3"),Toast.LENGTH_LONG).show();
                         /*ivImg1.setImageBitmap(ultimoRegistro("2"));
                         ivImg2.setImageBitmap(ultimoRegistro("1"));
-                        ivImg3.setImageBitmap(ultimoRegistro(""));
+                        ivImg3.setImageBitmap(ultimoRegistro(""));*/
 
-                        switch (tarea.getRightChoice()) {
+                        int num = 0;
+
+                        try {
+                            num = Integer.parseInt(jsonObject.optString("numero"));
+                        } catch(NumberFormatException nfe) {
+                            Log.i("ERROR", "Opcion correcta invalida");
+                        }
+
+                        switch (num) {
                             case 1:
                                 rightChoice = rbImg1;
                                 break;
@@ -206,7 +194,10 @@ public class ResolverTareaActivity extends AppCompatActivity implements Response
                             case 3:
                                 rightChoice = rbImg3;
                                 break;
-                        }*/
+                        }
+
+                        Toast.makeText(ResolverTareaActivity.this,jsonObject.optString("numero"),Toast.LENGTH_LONG);
+
                     }
                 }, new Response.ErrorListener() {
 
@@ -237,5 +228,9 @@ public class ResolverTareaActivity extends AppCompatActivity implements Response
     public void onResponse(JSONObject response) {
         requestResponse = response;
         Log.i("RESPONSE", response.toString());
+    }
+
+    public void setIdTarea(String idTarea) {
+        this.idTarea = idTarea;
     }
 }
