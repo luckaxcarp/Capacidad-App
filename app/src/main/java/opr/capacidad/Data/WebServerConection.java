@@ -17,7 +17,11 @@ public class WebServerConection implements Response.Listener<JSONObject>, Respon
 
     private final String AWS_SERVER = "http://18.218.177.65/";
     private final String LOCAL_SERVER = "http://192.168.1.43/capacidad/";
+
     private final String INTERFAZ_INSERT_TAREA_ELEGIR_IMAGEN = "ins-tarea-elegirimagen.php";
+    private final String INTERFAZ_SELECT_TAREA_ELEGIR_IMAGEN = "sel-tarea-elegirimagen.php";
+
+    // Constants of insert Tarea
     private final String CAMPO_CONSIGNA = "consigna";
     private final String CAMPO_FECHA_PROGRAMADA = "f_programada";
     private final String CAMPO_TIPO = "tipo";
@@ -28,15 +32,18 @@ public class WebServerConection implements Response.Listener<JSONObject>, Respon
     private final String CAMPO_IMAGENCORRECTA = "imagencorrecta";
     private final String VALUE_TIPO_ELEGIR_IMAGEN = "1";
 
+    // Constants of select Tarea
+    private final String CAMPO_ID_TAREA = "tarea";
+
     private String serverUrl = LOCAL_SERVER;
 
+    private String url = "";
     private RequestQueue request;
     private JsonObjectRequest jsonObjectRequest;
 
-    private String conectionResponse;
+    private JSONObject connResponse;
+    private VolleyError connError;
     private boolean errorState;
-    private ProgressDialog progress;
-
 
     public WebServerConection(Context context) {
         request = Volley.newRequestQueue(context);
@@ -54,34 +61,42 @@ public class WebServerConection implements Response.Listener<JSONObject>, Respon
                 CAMPO_TIPO + "=" + tipoTarea + "&" + CAMPO_ID_TERAPIA + "=" + idTerapia +
                 "&" + CAMPO_UBICACION1 + "=" + ubicacion1 + "&" + CAMPO_UBICACION2 + "=" + ubicacion2 +
                 "&" + CAMPO_UBICACION3 + "=" + ubicacion3 + "&" + CAMPO_IMAGENCORRECTA + "=" + imagencorrecta;
-
+        url = url.replace(" ", "%20");
         Log.i("WebServer", "url: " + url);
 
-        url = url.replace(" ", "%20");
-
-        jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, this,this);
+        jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url,
+                null, this,this);
         request.add(jsonObjectRequest);
+    }
+
+    public String generateUrlResolverTarea(String idtarea) {
+        return url = serverUrl + INTERFAZ_SELECT_TAREA_ELEGIR_IMAGEN + "?" + CAMPO_ID_TAREA + "=" +
+                idtarea;
     }
 
     @Override
     public void onErrorResponse(VolleyError error) {
         errorState = true;
-        conectionResponse = error.toString();
-
+        connError = error;
+        Log.i("TAREA", error.toString());
     }
 
     @Override
     public void onResponse(JSONObject response) {
         errorState = false;
-        conectionResponse = response.toString();
+        connResponse = response;
+        Log.i("TAREA", connResponse.toString());
     }
 
-    public String getConectionResponse() {
-        return conectionResponse;
+    public JSONObject getConnResponse() {
+        return connResponse;
     }
 
     public boolean isErrorState() {
         return errorState;
     }
 
+    public VolleyError getConnError() {
+        return connError;
+    }
 }

@@ -5,7 +5,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
@@ -18,15 +17,32 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.ByteArrayOutputStream;
-import java.io.UnsupportedEncodingException;
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
-import opr.capacidad.R;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import opr.capacidad.Data.WebServerConection;
 import opr.capacidad.Utilidades.Utilidades;
 import opr.capacidad.model.Chronometer;
 import opr.capacidad.model.Tarea;
 
-public class ResolverTareaActivity extends AppCompatActivity {
+import static android.provider.ContactsContract.CommonDataKinds.Website.URL;
+
+public class ResolverTareaActivity extends AppCompatActivity implements Response.Listener<JSONObject>,
+        Response.ErrorListener {
 
     private Tarea tarea = null;
     private TextView tvTittle;
@@ -41,7 +57,10 @@ public class ResolverTareaActivity extends AppCompatActivity {
     private RadioButton rightChoice;
     private Button btnSubmit;
     private double resolutionTime;
-    private Integer constante;
+
+    private RequestQueue requestQueue;
+    private JsonObjectRequest jsonObjectRequest;
+    private JSONObject requestResponse;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,35 +78,8 @@ public class ResolverTareaActivity extends AppCompatActivity {
         rbImg3 = findViewById(R.id.radio_img3);
         btnSubmit = findViewById(R.id.btnSubmit);
 
-
-        // <Load data
-        tarea = new Tarea();
-        tarea.getDataById(1);
-
-
-        tvTittle.setText(tarea.getTittle());
-        tvConsigna.setText(tarea.getConsigna());
-        ivImg1.setImageBitmap(ultimoRegistro("2")); //tarea.getImage1()
-        ivImg2.setImageBitmap(ultimoRegistro("1"));
-        ivImg3.setImageBitmap(ultimoRegistro(""));
-
-
-        switch (tarea.getRightChoice()) {
-            case 1:
-                rightChoice = rbImg1;
-                break;
-            case 2:
-                rightChoice = rbImg2;
-                break;
-            case 3:
-                rightChoice = rbImg3;
-                break;
-        }
-        // Load data>
-
-        Log.i("DEBUG", "-- aqui se llama al servicio --");
-        Chronometer.setUpdateListener(this);
-        initializeChronometer();
+        requestQueue = Volley.newRequestQueue(ResolverTareaActivity.this);
+        loadData();
 
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,6 +111,8 @@ public class ResolverTareaActivity extends AppCompatActivity {
             }
         });
     }
+
+
 
 
     protected void onDestroy() {
@@ -173,41 +167,75 @@ public class ResolverTareaActivity extends AppCompatActivity {
         return decodedImage;
     }
 
-    private Bitmap ultimoRegistro(String id) {
-        ConexionSQLiteHelper conn = new ConexionSQLiteHelper(this, "bd_usuarios", null, 1);
-        SQLiteDatabase db = conn.getReadableDatabase();
+    private void loadData() {
+        tarea = new Tarea();
+        WebServerConection webServerConection = new WebServerConection(this);
+        String url = webServerConection.generateUrlResolverTarea("13");
 
-        String image = "";
-        String otherRecord = "";
+        RequestQueue queue = Volley.newRequestQueue(this);
 
-        if (!id.equalsIgnoreCase("")) {
-            Log.i("ELEGIR REGISTRO", id);
-            otherRecord = " - " + id;
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.i("RESPONSE", response.toString());
+
+                        JSONArray json = null;
+                        JSONObject jsonObject = null;
+                        try {
+                            json = response.getJSONArray("tarea");
+                            jsonObject = json.getJSONObject(0);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        //tvTittle.setText("Vacío");//tarea.getTittle()
+                        tvConsigna.setText(jsonObject.optString("consigna"));
+                        /*ivImg1.setImageBitmap(ultimoRegistro("2"));
+                        ivImg2.setImageBitmap(ultimoRegistro("1"));
+                        ivImg3.setImageBitmap(ultimoRegistro(""));
+
+                        switch (tarea.getRightChoice()) {
+                            case 1:
+                                rightChoice = rbImg1;
+                                break;
+                            case 2:
+                                rightChoice = rbImg2;
+                                break;
+                            case 3:
+                                rightChoice = rbImg3;
+                                break;
+                        }*/
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO: Handle error
+
+                    }
+                });
+        queue.add(jsonObjectRequest);
+
+
+        if (true) {
+            Log.i("DEBUG", "-- aqui se llama al servicio --");
+            Chronometer.setUpdateListener(this);
+            initializeChronometer();
+        } else {
+            Toast.makeText(this,"No se pudieron cargar los datos",Toast.LENGTH_LONG).show();
         }
-
-        try {
-            String selectQuery = "SELECT " + Utilidades.CAMPO_NOMBRE_IMAGEN +  " FROM " + Utilidades.TABLA_IMAGEN +  " WHERE " +
-                    Utilidades.CAMPO_ID_IMAGEN + " = (SELECT MAX(" + Utilidades.CAMPO_ID_IMAGEN +
-                    ")  FROM " + Utilidades.TABLA_IMAGEN + ")" + otherRecord + ";";
-
-            Log.i("SQLite",selectQuery);
-            Cursor cursor = db.rawQuery(selectQuery, null);
-            cursor.moveToLast();
-
-            image = cursor.getString(0);
-            cursor.close();
-
-        } catch (Exception e) {
-            Toast.makeText(getApplicationContext(), "El documento no existe", Toast.LENGTH_SHORT).show();
-            Log.i("SQLite", e.toString());
-        } finally {
-            db.close();
-        }
-
-        byte[] imagenconvertida = Base64.decode(image, Base64.DEFAULT);
-        Bitmap decodedImage = BitmapFactory.decodeByteArray(imagenconvertida, 0, imagenconvertida.length);
-        Log.i("BASE64",image);
-        return decodedImage;
     }
 
+    @Override
+    public void onErrorResponse(VolleyError error) {
+        Log.i("RESPONSE", error.toString());
+    }
+
+    @Override
+    public void onResponse(JSONObject response) {
+        requestResponse = response;
+        Log.i("RESPONSE", response.toString());
+    }
 }

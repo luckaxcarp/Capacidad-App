@@ -24,8 +24,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -158,12 +156,11 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
                 Log.i("CONECTION" , "Error = " + String.valueOf(conn.isErrorState()));
 
                 if (conn.isErrorState()) {
-                    Log.e("Error", conn.getConectionResponse());
+                    Log.e("Error", conn.getConnResponse().toString());
                     Toast toast1 = Toast.makeText(getApplicationContext(), "Error al crear la tarea", Toast.LENGTH_SHORT);
                     toast1.setGravity(Gravity.CENTER,0,0);
                 } else {
-                    Toast toast1 = Toast.makeText(getApplicationContext(), "Tarea creada exitosamente", Toast.LENGTH_SHORT);
-                    toast1.setGravity(Gravity.CENTER,0,0);
+                    Toast.makeText(getApplicationContext(), "Tarea creada exitosamente", Toast.LENGTH_SHORT).show();
                 }
             }
         });
