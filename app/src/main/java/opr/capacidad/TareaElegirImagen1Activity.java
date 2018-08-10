@@ -48,7 +48,7 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
-import opr.capacidad.Data.WebServerConection;
+import opr.capacidad.Data.WebServer;
 
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static android.Manifest.permission.CAMERA;
@@ -185,14 +185,16 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
                     Log.i("SET DATA", e.toString());
                 }
 
+
+
+
                 int selectedId = radioGroup.getCheckedRadioButtonId();
                 if (selectedId != -1) {
                     RadioButton selectedRadioButton = findViewById(selectedId);
                     rightChoice = selectedRadioButton.getText().toString();
                 }
 
-                //sendTarea();
-                sendImages();
+                sendTarea();
             }
         });
 
@@ -214,13 +216,13 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
         startActivity(intent);*/
     }
 
-    private void sendTarea() {
+    private void oldSendTarea() {
         request = Volley.newRequestQueue(TareaElegirImagen1Activity.this);
 
         Log.i("CREAR", "consigna: " + etConsigna.getText().toString() +
                 ", fecha programada: " + viewFProgramada.getText().toString());
 
-        String url = WebServerConection.generateUrlCreateTarea(etConsigna.getText().toString(),
+        String url = WebServer.oldGenerateUrlCreateTarea(etConsigna.getText().toString(),
                 viewFProgramada.getText().toString(),idTerapia,"path1",
                 "path2", "path3", rightChoice);
 
@@ -244,20 +246,21 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
         request.add(jsonObjectRequest);
     }
 
-    private void sendImages() {
-        String url = "http://192.168.1.43/capacidad/ins-tarea-elegirimagen.php";
+    private void sendTarea() {
+        String url = WebServer.generateUrlCreateTarea();
+        Log.i("URL", url);
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.i(" RESPONSE", response);
-                Toast.makeText(TareaElegirImagen1Activity.this, "Enviado",Toast.LENGTH_SHORT).show();
+                Toast.makeText(TareaElegirImagen1Activity.this, "Tarea cargada exitosamente",Toast.LENGTH_SHORT).show();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.i(" RESPONSE", error.toString());
-                Toast.makeText(TareaElegirImagen1Activity.this, "Error al enviar",Toast.LENGTH_SHORT).show();
+                Toast.makeText(TareaElegirImagen1Activity.this, "Error al cargar la tarea",Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override
@@ -268,9 +271,9 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
                 params.put("f_programada",viewFProgramada.getText().toString());
                 params.put("tipo","1");
                 params.put("id_terapia",idTerapia);
-                params.put("ubicacion1",imageString);
-                params.put("ubicacion2",imageString2);
-                params.put("ubicacion3",imageString3);
+                params.put("ubicacion1","path1");
+                params.put("ubicacion2","path2");
+                params.put("ubicacion3","path3");
                 params.put("imagencorrecta",rightChoice);
 
                 return params;
@@ -283,7 +286,7 @@ public class TareaElegirImagen1Activity extends AppCompatActivity {
 
     private String bitmapToBase64(Bitmap image) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        image.compress(Bitmap.CompressFormat.JPEG, 75, baos);
         byte[] imageBytes = baos.toByteArray();
         return Base64.encodeToString(imageBytes, Base64.DEFAULT);
     }

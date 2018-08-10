@@ -8,7 +8,7 @@ import android.widget.Button;
 
 public class ElegirTarea extends AppCompatActivity {
 
-   private Button elegirImagen;
+   private Button crearTarea;
     private Button Volver;
     private Button Unir;
 
@@ -17,9 +17,9 @@ public class ElegirTarea extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_elegir_tarea);
 
-        elegirImagen = (Button) findViewById(R.id.btnElegirImagen);
+        crearTarea = (Button) findViewById(R.id.btnCrearTarea);
 
-        elegirImagen.setOnClickListener(new View.OnClickListener() {
+        crearTarea.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent elegirImagen = new Intent(ElegirTarea.this, TareaElegirImagen1Activity.class);
@@ -35,12 +35,12 @@ public class ElegirTarea extends AppCompatActivity {
                 startActivity(Volver);
             }
         });
-        Unir = (Button) findViewById(R.id.btnUnirConFlechas);
+        Unir = (Button) findViewById(R.id.btnResolverTarea);
 
         Unir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent Unir = new Intent(ElegirTarea.this, ResolverTareaActivity.class);
+                Intent Unir = new Intent(ElegirTarea.this, Select.class);
                 startActivity(Unir);
             }
         });

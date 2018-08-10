@@ -1,13 +1,8 @@
 package opr.capacidad;
 
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -17,29 +12,20 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import opr.capacidad.Data.WebServerConection;
-import opr.capacidad.Utilidades.Utilidades;
+import opr.capacidad.Data.WebServer;
 import opr.capacidad.model.Chronometer;
 import opr.capacidad.model.Tarea;
-
-import static android.provider.ContactsContract.CommonDataKinds.Website.URL;
 
 public class ResolverTareaActivity extends AppCompatActivity implements Response.Listener<JSONObject>,
         Response.ErrorListener {
@@ -81,6 +67,8 @@ public class ResolverTareaActivity extends AppCompatActivity implements Response
         btnSubmit = findViewById(R.id.btnSubmit);
 
         requestQueue = Volley.newRequestQueue(ResolverTareaActivity.this);
+        idTarea = getIntent().getStringExtra("ID_TAREA");
+        Log.i("IDTAREA", idTarea);
         loadData();
 
         btnSubmit.setOnClickListener(new View.OnClickListener() {
@@ -138,8 +126,9 @@ public class ResolverTareaActivity extends AppCompatActivity implements Response
 
     private void loadData() {
         tarea = new Tarea();
-        WebServerConection webServerConection = new WebServerConection(this);
-        String url = webServerConection.generateUrlResolverTarea("20");
+        WebServer webServer = new WebServer(this);
+        String url = webServer.generateUrlResolverTarea(idTarea);
+        Log.i("URL", url);
 
         RequestQueue queue = Volley.newRequestQueue(this);
 
@@ -159,7 +148,7 @@ public class ResolverTareaActivity extends AppCompatActivity implements Response
                             Log.i("JSON", e.toString());
                         }
 
-                        //tvTittle.setText("Vacío");//tarea.getTittle()
+                        //tvTittle.setText("Vacío"); //tarea.getTittle()
                         tvConsigna.setText(jsonObject.optString("consigna"));
 
                         try {
@@ -168,7 +157,7 @@ public class ResolverTareaActivity extends AppCompatActivity implements Response
                         } catch (JSONException e) {
                             Log.i("JSON", e.toString());
                         }
-                        Toast.makeText(ResolverTareaActivity.this,
+                        //Toast.makeText(ResolverTareaActivity.this,
                                 "Imagen 1: " + jsonObject.optString("ubicacion") +
                                         " Imagen 2: " + jsonObject.optString("2") +
                                         " Imagen 3: " + jsonObject.optString("3"),Toast.LENGTH_LONG).show();

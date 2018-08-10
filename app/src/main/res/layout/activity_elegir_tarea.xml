@@ -7,22 +7,22 @@
     tools:context=".ElegirTarea">
 
     <Button
-        android:id="@+id/btnElegirImagen"
+        android:id="@+id/btnCrearTarea"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
         android:layout_alignParentTop="true"
         android:layout_marginTop="59dp"
-        android:text="Elegir imagen correcta" />
+        android:text="Crear tarea" />
 
     <Button
-        android:id="@+id/btnUnirConFlechas"
+        android:id="@+id/btnResolverTarea"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
         android:layout_alignParentTop="true"
         android:layout_marginTop="135dp"
-        android:text="Unir con flechas" />
+        android:text="Resolver tarea" />
 
     <Button
         android:id="@+id/btnAdjuntarArchivos"
@@ -30,8 +30,7 @@
         android:layout_height="wrap_content"
 
         android:layout_alignParentTop="true"
-        android:layout_marginTop="216dp"
-        android:text="Adjuntar archivos" />
+        android:layout_marginTop="216dp" />
 
     <Button
         android:id="@+id/btnIdentificarImagen"
@@ -39,8 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
 
-        android:layout_marginBottom="166dp"
-        android:text="Identificar imagen" />
+        android:layout_marginBottom="166dp" />
 
     <Button
         android:id="@+id/btnVolver"

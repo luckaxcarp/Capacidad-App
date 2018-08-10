@@ -11,7 +11,7 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONObject;
 
-final public class WebServerConection implements Response.Listener<JSONObject>, Response.ErrorListener {
+final public class WebServer implements Response.Listener<JSONObject>, Response.ErrorListener {
 
     private static String AWS_SERVER = "http://18.218.177.65/";
     private static String LOCAL_SERVER = "http://192.168.1.43/capacidad/";
@@ -34,7 +34,7 @@ final public class WebServerConection implements Response.Listener<JSONObject>, 
     // Constants of select Tarea
     private static String CAMPO_ID_TAREA = "tarea";
 
-    private static String SERVER_URL = LOCAL_SERVER;
+    private static String SERVER_URL = AWS_SERVER;
 
     private String url = "";
     private RequestQueue request;
@@ -44,14 +44,20 @@ final public class WebServerConection implements Response.Listener<JSONObject>, 
     private VolleyError connError;
     private boolean errorState;
 
-    public WebServerConection(Context context) {
+    public WebServer(Context context) {
         request = Volley.newRequestQueue(context);
         Log.i("WebServer", "constructor");
     }
 
-    public static String generateUrlCreateTarea(String consigna, String fechaProgramada, String idTerapia,
-                                       String ubicacion1, String ubicacion2, String ubicacion3,
-                                       String imagencorrecta) {
+    public static String generateUrlCreateTarea() {
+        String url = SERVER_URL + INTERFAZ_INSERT_TAREA_ELEGIR_IMAGEN;
+
+        return url;
+    }
+
+    public static String oldGenerateUrlCreateTarea(String consigna, String fechaProgramada, String idTerapia,
+                                                String ubicacion1, String ubicacion2, String ubicacion3,
+                                                String imagencorrecta) {
         Log.i("WebServer", "generateUrlCreateTarea");
         String tipoTarea = VALUE_TIPO_ELEGIR_IMAGEN;
 

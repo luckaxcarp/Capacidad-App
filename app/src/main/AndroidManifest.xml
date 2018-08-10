@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <protected-broadcast android:name="android.intent.action.MEDIA_MOUNTED" />
 
@@ -40,6 +40,7 @@
             android:name=".TodoUsuario"
             android:label="@string/title_activity_todo_usuario"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Select"></activity>
     </application>
 
 </manifest>
