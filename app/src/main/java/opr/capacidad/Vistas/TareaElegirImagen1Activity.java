@@ -1,4 +1,4 @@
-package opr.capacidad;
+package opr.capacidad.Vistas;
 
 import android.annotation.TargetApi;
 import android.content.DialogInterface;
@@ -39,8 +39,6 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-import org.json.JSONObject;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
@@ -49,6 +47,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import opr.capacidad.Data.WebServer;
+import opr.capacidad.ElegirTarea;
+import opr.capacidad.R;
 
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static android.Manifest.permission.CAMERA;

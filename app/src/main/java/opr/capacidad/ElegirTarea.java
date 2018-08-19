@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import opr.capacidad.Vistas.TareaElegirImagen1Activity;
+
 public class ElegirTarea extends AppCompatActivity {
 
    private Button crearTarea;

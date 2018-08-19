@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import opr.capacidad.Vistas.ResolverTareaActivity;
+
 public class Select extends AppCompatActivity {
 
     private Button cargar;

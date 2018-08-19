@@ -1,4 +1,4 @@
-package opr.capacidad;
+package opr.capacidad.Vistas;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -20,6 +20,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
@@ -30,6 +31,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
 import opr.capacidad.Data.WebServer;
+import opr.capacidad.R;
 import opr.capacidad.model.Chronometer;
 import opr.capacidad.model.Tarea;
 
@@ -85,17 +87,16 @@ public class ResolverTareaActivity extends AppCompatActivity {
                     int selectedId = rbGroup.getCheckedRadioButtonId();
                     RadioButton selectedRD = findViewById(selectedId);
 
-                    // --- PENDIENTE --- Enviar consulta a base de datos aumentando en uno la cantidad de intentos de esta tarea.
+                    String urlAttempt = WebServer.genUrlRecordAttempt(idTarea,String.valueOf(resolutionTime));
 
                     if (selectedRD == rightChoice) {
+                        sendData(urlAttempt);
+
                         Toast.makeText(getApplicationContext(), "¡Felicidades! Respondiste correctamente.", Toast.LENGTH_SHORT).show();
-
-                        int i = (int) resolutionTime; //temp
-                        tarea.setTareaCompletada(i);
-
                     } else {
-                        Toast.makeText(getApplicationContext(), "¡Casi! Sigue intentándolo.", Toast.LENGTH_SHORT).show();
+                        sendData(urlAttempt);
 
+                        Toast.makeText(getApplicationContext(), "¡Casi! Sigue intentándolo.", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -108,6 +109,23 @@ public class ResolverTareaActivity extends AppCompatActivity {
                 // checkedId is the RadioButton selected
             }
         });
+    }
+
+    private void sendData(String url) {
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.i("Record attempt response", response.toString());
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.i("Record attempt error", error.toString());
+            }
+        });
+
+        RequestQueue requestQueue = Volley.newRequestQueue(ResolverTareaActivity.this);
+        requestQueue.add(stringRequest);
     }
 
     protected void onDestroy() {
@@ -131,8 +149,7 @@ public class ResolverTareaActivity extends AppCompatActivity {
 
     private void loadData() {
         tarea = new Tarea();
-        WebServer webServer = new WebServer(this);
-        String url = webServer.generateUrlResolverTarea(idTarea);
+        String url = WebServer.generateUrlResolverTarea(idTarea);
         Log.i("URL", url);
 
         RequestQueue queue = Volley.newRequestQueue(this);
@@ -186,11 +203,11 @@ public class ResolverTareaActivity extends AppCompatActivity {
                         JSONObject jsonObj;
 
                         try {
-                            json = response.getJSONArray("imagencorrecta");
+                            json = response.getJSONArray("mediacorrecta");
                             jsonObj = json.getJSONObject(0);
                             num = Integer.parseInt(jsonObj.optString("numero"));
                         } catch (NumberFormatException nfe) {
-                            Log.i("ERROR", "Opcion correcta invalida");
+                            Log.i("ERROR DE TIPO DE DATO", "Opcion correcta invalida");
                         } catch (JSONException jsone) {
                             Log.i("JSON", jsone.toString());
                         }

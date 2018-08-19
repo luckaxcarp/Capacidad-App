@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ResolverTareaActivity">
+    tools:context=".Vistas.ResolverTareaActivity">
 
     <TextView
         android:id="@+id/tarea_tittle"

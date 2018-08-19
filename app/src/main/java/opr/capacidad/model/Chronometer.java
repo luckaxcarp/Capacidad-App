@@ -12,7 +12,7 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import opr.capacidad.ResolverTareaActivity;
+import opr.capacidad.Vistas.ResolverTareaActivity;
 
 
 public class Chronometer extends Service {
