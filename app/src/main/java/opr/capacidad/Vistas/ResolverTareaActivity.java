@@ -15,6 +15,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -32,6 +33,7 @@ import java.net.URLDecoder;
 
 import opr.capacidad.Data.WebServer;
 import opr.capacidad.R;
+import opr.capacidad.Utilidades.UserMessages;
 import opr.capacidad.model.Chronometer;
 import opr.capacidad.model.Tarea;
 
@@ -51,7 +53,7 @@ public class ResolverTareaActivity extends AppCompatActivity {
     private RadioButton rbImg3;
     private RadioButton rightChoice;
     private Button btnSubmit;
-    private double resolutionTime;
+    private int resolutionTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,15 +73,17 @@ public class ResolverTareaActivity extends AppCompatActivity {
 
         idTarea = getIntent().getStringExtra("ID_TAREA");
         Log.i("IDTAREA", idTarea);
-        loadData();
+        loadTareaToActivity();
 
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                Log.i("CRONOMETRO", String.format("%.2f", resolutionTime) + "s");
+                Log.i("CRONOMETRO", Integer.toString(resolutionTime));
 
                 stopChronometer();
+
+                resolutionTime = 30;
 
                 if (rbGroup.getCheckedRadioButtonId() == -1) {
                     Toast.makeText(getApplicationContext(), "Por favor elija una imagen.", Toast.LENGTH_SHORT).show();
@@ -88,6 +92,8 @@ public class ResolverTareaActivity extends AppCompatActivity {
                     RadioButton selectedRD = findViewById(selectedId);
 
                     String urlAttempt = WebServer.genUrlRecordAttempt(idTarea,String.valueOf(resolutionTime));
+
+                    Log.i("DATOS DE INTENTOS", urlAttempt);
 
                     if (selectedRD == rightChoice) {
                         sendData(urlAttempt);
@@ -144,10 +150,10 @@ public class ResolverTareaActivity extends AppCompatActivity {
     }
 
     public void updateChronometer(double time) {
-        resolutionTime = time;
+        resolutionTime = (int) time;
     }
 
-    private void loadData() {
+    private void loadTareaToActivity() {
         tarea = new Tarea();
         String url = WebServer.generateUrlResolverTarea(idTarea);
         Log.i("URL", url);
@@ -224,7 +230,7 @@ public class ResolverTareaActivity extends AppCompatActivity {
                                 break;
                         }
 
-                        Toast.makeText(ResolverTareaActivity.this,jsonObject.optString("numero"),Toast.LENGTH_LONG);
+                        Toast.makeText(ResolverTareaActivity.this,jsonObject.optString("numero"),Toast.LENGTH_LONG).show();
 
                     }
                 }, new Response.ErrorListener() {
@@ -233,6 +239,20 @@ public class ResolverTareaActivity extends AppCompatActivity {
                     public void onErrorResponse(VolleyError error) {
                         // TODO: Handle error
                         Log.i("RESPONSE", error.toString());
+
+                        Toast.makeText(ResolverTareaActivity.this, error.networkResponse.statusCode, Toast.LENGTH_LONG).show();
+
+                        /**NetworkResponse response = error.networkResponse;
+                        if(response != null && response.data != null){
+
+                            switch(response.statusCode) {
+                                case 400:
+                                    Toast.makeText(ResolverTareaActivity.this, UserMessages.ERROR_CONN_SERVER, Toast.LENGTH_LONG).show();
+                                    break;
+                                case 500 - 503:
+                                    Toast.makeText(ResolverTareaActivity.this, UserMessages.ERROR_CONN_SERVER, Toast.LENGTH_LONG).show();
+                            }
+                        }**/
                     }
                 });
         queue.add(jsonObjectRequest);
